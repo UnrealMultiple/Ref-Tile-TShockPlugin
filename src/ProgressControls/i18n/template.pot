@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ProgressControls\n"
-"POT-Creation-Date: 2026-04-18 12:26:55+0000\n"
-"PO-Revision-Date: 2026-04-18 12:26:55+0000\n"
+"POT-Creation-Date: 2026-09-11 06:18:58+0000\n"
+"PO-Revision-Date: 2026-09-11 06:18:58+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -10,42 +10,42 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: GetText.NET Extractor\n"
 
-#: ../../PControl.Utils.cs:475
+#: ../../PControl.Utils.cs:463
 #, csharp-format
 msgid " [c/{0}:{1}] 分"
 msgstr ""
 
-#: ../../PControl.Utils.cs:470
+#: ../../PControl.Utils.cs:458
 #, csharp-format
 msgid " [c/{0}:{1}] 时"
 msgstr ""
 
-#: ../../PControl.Utils.cs:480
+#: ../../PControl.Utils.cs:468
 #, csharp-format
 msgid " [c/{0}:{1}] 秒"
 msgstr ""
 
-#: ../../PControl.Utils.cs:505
+#: ../../PControl.Utils.cs:493
 #, csharp-format
 msgid " [c/{0}:0] 秒"
 msgstr ""
 
-#: ../../PControl.Utils.cs:492
+#: ../../PControl.Utils.cs:480
 #, csharp-format
 msgid " {0} 分"
 msgstr ""
 
-#: ../../PControl.Utils.cs:487
+#: ../../PControl.Utils.cs:475
 #, csharp-format
 msgid " {0} 时"
 msgstr ""
 
-#: ../../PControl.Utils.cs:497
+#: ../../PControl.Utils.cs:485
 #, csharp-format
 msgid " {0} 秒"
 msgstr ""
 
-#: ../../PControl.Utils.cs:509
+#: ../../PControl.Utils.cs:497
 msgid " 0 秒"
 msgstr ""
 
@@ -104,7 +104,7 @@ msgid ""
 "{0} 地图存在，第 {1} 次重置地图将自动调用\n"
 msgstr ""
 
-#: ../../PControl.Utils.cs:337
+#: ../../PControl.Utils.cs:325
 #, csharp-format
 msgid "{0} 未到解锁时间，还剩{1}"
 msgstr ""
@@ -454,8 +454,8 @@ msgstr ""
 msgid "大师"
 msgstr ""
 
-#: ../../PControl.Utils.cs:359
-#: ../../PControl.Utils.cs:363
+#: ../../PControl.Utils.cs:347
+#: ../../PControl.Utils.cs:351
 #: ../../PControl.Initialize.cs:778
 #: ../../PControl.Initialize.cs:782
 #, csharp-format
@@ -599,14 +599,14 @@ msgstr ""
 msgid "指令计划："
 msgstr ""
 
-#: ../../PControl.Utils.cs:352
+#: ../../PControl.Utils.cs:340
 #: ../../PControl.Initialize.cs:739
 #: ../../PControl.Initialize.cs:773
 #: ../../PControl.Initialize.cs:1256
 msgid "推迟"
 msgstr ""
 
-#: ../../PControl.Utils.cs:354
+#: ../../PControl.Utils.cs:342
 #: ../../PControl.Initialize.cs:740
 #: ../../PControl.Initialize.cs:774
 #: ../../PControl.Initialize.cs:1257
@@ -736,15 +736,15 @@ msgstr ""
 msgid "服务器将在{0}秒后重置"
 msgstr ""
 
-#: ../../PControl.Utils.cs:313
+#: ../../PControl.Utils.cs:301
 msgid "服务器执行指令成功——来自插件：计划书ProgressControl"
 msgstr ""
 
-#: ../../PControl.Utils.cs:248
+#: ../../PControl.Utils.cs:242
 msgid "服务器正在重启"
 msgstr ""
 
-#: ../../PControl.Utils.cs:252
+#: ../../PControl.Utils.cs:246
 msgid "服务器正在重启——来自插件：计划书ProgressControl"
 msgstr ""
 
@@ -757,8 +757,8 @@ msgstr ""
 msgid "服务器正在重置——来自插件：计划书ProgressControl"
 msgstr ""
 
-#: ../../PControl.Utils.cs:314
-#: ../../PControl.Utils.cs:315
+#: ../../PControl.Utils.cs:302
+#: ../../PControl.Utils.cs:303
 #: ../../PControl.Initialize.cs:1162
 msgid "服务器自动执行指令成功"
 msgstr ""
@@ -891,33 +891,33 @@ msgstr ""
 msgid "权限不足[{0}]，不能调整含有重置计划系列指令的计划"
 msgstr ""
 
-#: ../../PControl.Utils.cs:783
+#: ../../PControl.Utils.cs:771
 msgid "格式错误。H 必须为整数"
 msgstr ""
 
-#: ../../PControl.Utils.cs:761
+#: ../../PControl.Utils.cs:749
 msgid "格式错误。M 和 S 不能大于59，请自行进位"
 msgstr ""
 
-#: ../../PControl.Utils.cs:755
+#: ../../PControl.Utils.cs:743
 msgid "格式错误。M 和 S 不需要加负号，负号只需要填入 H 的前面即可"
 msgstr ""
 
-#: ../../PControl.Utils.cs:777
+#: ../../PControl.Utils.cs:765
 msgid "格式错误。M 必须为整数"
 msgstr ""
 
-#: ../../PControl.Utils.cs:771
+#: ../../PControl.Utils.cs:759
 msgid "格式错误。S 必须为整数"
 msgstr ""
 
-#: ../../PControl.Utils.cs:726
+#: ../../PControl.Utils.cs:714
 msgid ""
 "格式错误。应为[±num]或[±H:M:S]，num必须为整数或小数，H M "
 "S必须为整数或不填(不能为空格)，正号可以不加，冒号可用小数点代替但必须都要填"
 msgstr ""
 
-#: ../../PControl.Utils.cs:355
+#: ../../PControl.Utils.cs:343
 #: ../../PControl.Initialize.cs:740
 #: ../../PControl.Initialize.cs:774
 msgid "正常"
@@ -1053,7 +1053,7 @@ msgstr ""
 msgid "警告，未开启自动执行指令的计划，你的修改不会有任何效果"
 msgstr ""
 
-#: ../../PControl.Utils.cs:358
+#: ../../PControl.Utils.cs:346
 #: ../../PControl.Initialize.cs:743
 #: ../../PControl.Initialize.cs:777
 msgid "警告，未开启自动控制NPC进度计划，你的修改不会有任何效果"
@@ -1113,9 +1113,9 @@ msgstr ""
 msgid "计划时机不恰当，请1秒后重试"
 msgstr ""
 
-#: ../../PControl.Utils.cs:297
-#: ../../PControl.Utils.cs:298
-#: ../../PControl.Utils.cs:299
+#: ../../PControl.Utils.cs:285
+#: ../../PControl.Utils.cs:286
+#: ../../PControl.Utils.cs:287
 #, csharp-format
 msgid "请不要对自动执行的指令进行套娃！[/{0}]"
 msgstr ""
