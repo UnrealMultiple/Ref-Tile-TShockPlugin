@@ -22,7 +22,7 @@ public class FixHalves : WECommand
 		{
 			for (int tileY = y; tileY <= y2; tileY++)
 			{
-				ITile tile = Main.tile[tileX, tileY];
+				ref var tile = ref Main.tile[tileX, tileY];
 				if (tile.halfBrick() && TileSolid(tileX, tileY - 1))
 				{
 					tile.halfBrick(false);

@@ -27,7 +27,7 @@ public class Text : WECommand
 			{
 				if (Tools.InMapBoundaries(i + x, j + y) && (array[i, j].X != 0 || array[i, j].Y != 0))
 				{
-					ITile val = Main.tile[i + x, j + y];
+					ref var val = ref Main.tile[i + x, j + y];
 					val.active(true);
 					val.frameX = array[i, j].X;
 					val.frameY = array[i, j].Y;

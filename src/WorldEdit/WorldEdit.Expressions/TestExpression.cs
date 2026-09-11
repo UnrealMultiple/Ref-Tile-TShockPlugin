@@ -11,8 +11,8 @@ public sealed class TestExpression : Expression
 		Test = test;
 	}
 
-	public override bool Evaluate(ITile tile)
+	public override bool Evaluate(ref TileData tile)
 	{
-		return Test(tile);
+		return Test(ref tile);
 	}
 }

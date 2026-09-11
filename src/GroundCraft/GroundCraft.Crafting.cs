@@ -408,7 +408,7 @@ public sealed partial class GroundCraft
                 continue;
             }
 
-            item.TurnToAir(true);
+            item.TurnToAir();
             ClearConsumedItem(drop.Index);
             _stableScans.Remove(drop.Index);
         }
@@ -427,8 +427,7 @@ public sealed partial class GroundCraft
             itemType,
             stack,
             false,
-            0,
-            true);
+            0);
 
         if (index >= 0)
             SyncItem(index);
@@ -500,7 +499,7 @@ public sealed partial class GroundCraft
                 if (!WorldGen.InWorld(x, y, 10))
                     continue;
 
-                ITile tile = Framing.GetTileSafely(x, y);
+                ref var tile = ref Framing.GetTileSafely(x, y);
                 if (tile.active() && TileMatchesAny(recipe.RequiredTiles, tile.type))
                 {
                     stationCenter = new Vector2(x * 16f + 8f, y * 16f + 8f);

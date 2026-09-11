@@ -479,7 +479,7 @@ public class WeaponPlus : TerrariaPlugin
         Main.timeItemSlotCannotBeReusedFor[num] = 0;
         Main.item[num] = new WorldItem();
         var val = Main.item[num];
-        val.SetDefaults(Type);
+        val.inner.SetDefaults(Type);
         val.Prefix(pfix);
         val.stack = Stack;
         val.position.X = X + (Width / 2) - (val.width / 2);
@@ -499,7 +499,7 @@ public class WeaponPlus : TerrariaPlugin
         val.timeSinceItemSpawned = ItemID.Sets.OverflowProtectionTimeOffset[val.type];
         if (ItemSlot.Options.HighlightNewItems && val.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[val.type])
         {
-            val.newAndShiny = true;
+            val.inner.newAndShiny = true;
         }
         else if (Main.netMode == 0)
         {
@@ -524,7 +524,7 @@ public class WeaponPlus : TerrariaPlugin
             {
                 var stack = player.inventory[i].stack;
                 var prefix = player.inventory[i].prefix;
-                player.inventory[i].TurnToAir(false);
+                player.inventory[i].TurnToAir();
                 TShock.Players[whoAmI].SendData((PacketTypes) 5, "", whoAmI, i);
                 switch (model)
                 {
@@ -542,7 +542,7 @@ public class WeaponPlus : TerrariaPlugin
                         var obj3 = Main.item[num2];
                         obj3.inner.knockBack += item.orig_knockBack * 0.05f * item.knockBack_level;
                         Main.item[num2].inner.useAnimation = item.orig_useAnimation - item.useSpeed_level;
-                        Main.item[num2].inner.useTime = (int) (item.orig_useTime * 1f / item.orig_useAnimation * Main.item[num2].useAnimation);
+                        Main.item[num2].inner.useTime = (int) (item.orig_useTime * 1f / item.orig_useAnimation * Main.item[num2].inner.useAnimation);
                         var obj4 = Main.item[num2];
                         obj4.inner.shootSpeed += item.orig_shootSpeed * 0.05f * item.shootSpeed_level;
                         TShock.Players[whoAmI].SendData((PacketTypes) 21, null, num2);

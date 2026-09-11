@@ -19,7 +19,7 @@ public class Shape : WECommand
 	public Shape(int x, int y, int x2, int y2, MagicWand magicWand, TSPlayer plr, int shapeType, int rotateType, int flipType, bool wall, bool filled, int materialType, Expression expression)
 		: base(x, y, x2, y2, magicWand, plr, minMaxPoints: false)
 	{
-		this.expression = expression ?? new TestExpression(_ => true);
+		this.expression = expression ?? new TestExpression((ref _) => true);
 		this.shapeType = shapeType;
 		this.rotateType = rotateType;
 		this.flipType = flipType;
@@ -54,7 +54,7 @@ public class Shape : WECommand
 				for (int pointIndex = 0; pointIndex < linePoints.Length; pointIndex++)
 				{
 					WEPoint point = linePoints[pointIndex];
-					if (Tools.CanSet(Tile: false, Main.tile[(int)point.X, (int)point.Y], materialType, select, expression, magicWand, point.X, point.Y, plr))
+					if (Tools.CanSet(Tile: false, ref Main.tile[(int)point.X, (int)point.Y], materialType, select, expression, magicWand, point.X, point.Y, plr))
 					{
 						Main.tile[(int)point.X, (int)point.Y].wall = (ushort)materialType;
 						changedTileCount++;
@@ -65,7 +65,7 @@ public class Shape : WECommand
 			for (int pointIndex = 0; pointIndex < linePoints.Length; pointIndex++)
 			{
 				WEPoint point = linePoints[pointIndex];
-				if (Tools.CanSet(Tile: true, Main.tile[(int)point.X, (int)point.Y], materialType, select, expression, magicWand, point.X, point.Y, plr))
+				if (Tools.CanSet(Tile: true, ref Main.tile[(int)point.X, (int)point.Y], materialType, select, expression, magicWand, point.X, point.Y, plr))
 				{
 					SetTile(point.X, point.Y, materialType);
 					changedTileCount++;
@@ -81,7 +81,7 @@ public class Shape : WECommand
 				{
 					for (int tileY = y; tileY <= y2; tileY++)
 					{
-						if (Tools.CanSet(Tile: false, Main.tile[tileX, tileY], materialType, select, expression, magicWand, tileX, tileY, plr) && (filled || WorldEdit.Selections["border"](tileX, tileY, plr)))
+						if (Tools.CanSet(Tile: false, ref Main.tile[tileX, tileY], materialType, select, expression, magicWand, tileX, tileY, plr) && (filled || WorldEdit.Selections["border"](tileX, tileY, plr)))
 						{
 							Main.tile[tileX, tileY].wall = (ushort)materialType;
 							changedTileCount++;
@@ -94,7 +94,7 @@ public class Shape : WECommand
 			{
 				for (int tileY = y; tileY <= y2; tileY++)
 				{
-					if (Tools.CanSet(Tile: true, Main.tile[tileX, tileY], materialType, select, expression, magicWand, tileX, tileY, plr) && (filled || WorldEdit.Selections["border"](tileX, tileY, plr)))
+					if (Tools.CanSet(Tile: true, ref Main.tile[tileX, tileY], materialType, select, expression, magicWand, tileX, tileY, plr) && (filled || WorldEdit.Selections["border"](tileX, tileY, plr)))
 					{
 						SetTile(tileX, tileY, materialType);
 						changedTileCount++;
@@ -113,7 +113,7 @@ public class Shape : WECommand
 					{
 						for (int tileY = y; tileY <= y2; tileY++)
 						{
-							if (Tools.CanSet(Tile: false, Main.tile[tileX, tileY], materialType, select, expression, magicWand, tileX, tileY, plr) && WorldEdit.Selections["ellipse"](tileX, tileY, plr))
+							if (Tools.CanSet(Tile: false, ref Main.tile[tileX, tileY], materialType, select, expression, magicWand, tileX, tileY, plr) && WorldEdit.Selections["ellipse"](tileX, tileY, plr))
 							{
 								Main.tile[tileX, tileY].wall = (ushort)materialType;
 								changedTileCount++;
@@ -126,7 +126,7 @@ public class Shape : WECommand
 				{
 					for (int tileY = y; tileY <= y2; tileY++)
 					{
-						if (Tools.CanSet(Tile: true, Main.tile[tileX, tileY], materialType, select, expression, magicWand, tileX, tileY, plr) && WorldEdit.Selections["ellipse"](tileX, tileY, plr))
+						if (Tools.CanSet(Tile: true, ref Main.tile[tileX, tileY], materialType, select, expression, magicWand, tileX, tileY, plr) && WorldEdit.Selections["ellipse"](tileX, tileY, plr))
 						{
 							SetTile(tileX, tileY, materialType);
 							changedTileCount++;
@@ -142,7 +142,7 @@ public class Shape : WECommand
 				for (int pointIndex = 0; pointIndex < outlinePoints.Length; pointIndex++)
 				{
 					WEPoint point = outlinePoints[pointIndex];
-					if (Tools.CanSet(Tile: false, Main.tile[(int)point.X, (int)point.Y], materialType, select, expression, magicWand, point.X, point.Y, plr))
+					if (Tools.CanSet(Tile: false, ref Main.tile[(int)point.X, (int)point.Y], materialType, select, expression, magicWand, point.X, point.Y, plr))
 					{
 						Main.tile[(int)point.X, (int)point.Y].wall = (ushort)materialType;
 						changedTileCount++;
@@ -154,7 +154,7 @@ public class Shape : WECommand
 			for (int pointIndex = 0; pointIndex < outlineTilePoints.Length; pointIndex++)
 			{
 				WEPoint point = outlineTilePoints[pointIndex];
-				if (Tools.CanSet(Tile: true, Main.tile[(int)point.X, (int)point.Y], materialType, select, expression, magicWand, point.X, point.Y, plr))
+				if (Tools.CanSet(Tile: true, ref Main.tile[(int)point.X, (int)point.Y], materialType, select, expression, magicWand, point.X, point.Y, plr))
 				{
 					SetTile(point.X, point.Y, materialType);
 					changedTileCount++;
@@ -314,8 +314,8 @@ public class Shape : WECommand
 							WEPoint point = fillBoundaryPoints[pointIndex];
 							for (int tileY = point.Y; tileY <= y2; tileY++)
 							{
-								ITile tile = Main.tile[(int)point.X, tileY];
-								if (Tools.CanSet(Tile: false, tile, materialType, select, expression, magicWand, point.X, tileY, plr))
+								ref var tile = ref Main.tile[(int)point.X, tileY];
+								if (Tools.CanSet(Tile: false, ref tile, materialType, select, expression, magicWand, point.X, tileY, plr))
 								{
 									tile.wall = (ushort)materialType;
 									changedTileCount++;
@@ -330,8 +330,8 @@ public class Shape : WECommand
 						WEPoint point = fillTileBoundaryPoints[pointIndex];
 						for (int tileY = point.Y; tileY <= y2; tileY++)
 						{
-							ITile tile = Main.tile[(int)point.X, tileY];
-							if (Tools.CanSet(Tile: true, tile, materialType, select, expression, magicWand, point.X, tileY, plr))
+							ref var tile = ref Main.tile[(int)point.X, tileY];
+							if (Tools.CanSet(Tile: true, ref tile, materialType, select, expression, magicWand, point.X, tileY, plr))
 							{
 								SetTile(point.X, tileY, materialType);
 								changedTileCount++;
@@ -350,8 +350,8 @@ public class Shape : WECommand
 							WEPoint point = fillBoundaryPoints[pointIndex];
 							for (int tileY = point.Y; tileY >= y; tileY--)
 							{
-								ITile tile = Main.tile[(int)point.X, tileY];
-								if (Tools.CanSet(Tile: false, tile, materialType, select, expression, magicWand, point.X, tileY, plr))
+								ref var tile = ref Main.tile[(int)point.X, tileY];
+								if (Tools.CanSet(Tile: false, ref tile, materialType, select, expression, magicWand, point.X, tileY, plr))
 								{
 									tile.wall = (ushort)materialType;
 									changedTileCount++;
@@ -366,8 +366,8 @@ public class Shape : WECommand
 						WEPoint point = fillTileBoundaryPoints[pointIndex];
 						for (int tileY = point.Y; tileY >= y; tileY--)
 						{
-							ITile tile = Main.tile[(int)point.X, tileY];
-							if (Tools.CanSet(Tile: true, tile, materialType, select, expression, magicWand, point.X, tileY, plr))
+							ref var tile = ref Main.tile[(int)point.X, tileY];
+							if (Tools.CanSet(Tile: true, ref tile, materialType, select, expression, magicWand, point.X, tileY, plr))
 							{
 								SetTile(point.X, tileY, materialType);
 								changedTileCount++;
@@ -386,8 +386,8 @@ public class Shape : WECommand
 							WEPoint point = fillBoundaryPoints[pointIndex];
 							for (int tileX = point.X; tileX <= x2; tileX++)
 							{
-								ITile tile = Main.tile[tileX, (int)point.Y];
-								if (Tools.CanSet(Tile: false, tile, materialType, select, expression, magicWand, tileX, point.Y, plr))
+								ref var tile = ref Main.tile[tileX, (int)point.Y];
+								if (Tools.CanSet(Tile: false, ref tile, materialType, select, expression, magicWand, tileX, point.Y, plr))
 								{
 									tile.wall = (ushort)materialType;
 									changedTileCount++;
@@ -402,8 +402,8 @@ public class Shape : WECommand
 						WEPoint point = fillTileBoundaryPoints[pointIndex];
 						for (int tileX = point.X; tileX <= x2; tileX++)
 						{
-							ITile tile = Main.tile[tileX, (int)point.Y];
-							if (Tools.CanSet(Tile: true, tile, materialType, select, expression, magicWand, tileX, point.Y, plr))
+							ref var tile = ref Main.tile[tileX, (int)point.Y];
+							if (Tools.CanSet(Tile: true, ref tile, materialType, select, expression, magicWand, tileX, point.Y, plr))
 							{
 								SetTile(tileX, point.Y, materialType);
 								changedTileCount++;
@@ -422,8 +422,8 @@ public class Shape : WECommand
 							WEPoint point = fillBoundaryPoints[pointIndex];
 							for (int tileX = point.X; tileX >= x; tileX--)
 							{
-								ITile tile = Main.tile[tileX, (int)point.Y];
-								if (Tools.CanSet(Tile: false, tile, materialType, select, expression, magicWand, tileX, point.Y, plr))
+								ref var tile = ref Main.tile[tileX, (int)point.Y];
+								if (Tools.CanSet(Tile: false, ref tile, materialType, select, expression, magicWand, tileX, point.Y, plr))
 								{
 									tile.wall = (ushort)materialType;
 									changedTileCount++;
@@ -438,8 +438,8 @@ public class Shape : WECommand
 						WEPoint point = fillTileBoundaryPoints[pointIndex];
 						for (int tileX = point.X; tileX >= x; tileX++)
 						{
-							ITile tile = Main.tile[tileX, (int)point.Y];
-							if (Tools.CanSet(Tile: true, tile, materialType, select, expression, magicWand, tileX, point.Y, plr))
+							ref var tile = ref Main.tile[tileX, (int)point.Y];
+							if (Tools.CanSet(Tile: true, ref tile, materialType, select, expression, magicWand, tileX, point.Y, plr))
 							{
 								SetTile(tileX, point.Y, materialType);
 								changedTileCount++;
@@ -457,8 +457,8 @@ public class Shape : WECommand
 				for (int pointIndex = 0; pointIndex < wallOutlinePoints.Length; pointIndex++)
 				{
 					WEPoint point = wallOutlinePoints[pointIndex];
-					ITile tile = Main.tile[(int)point.X, (int)point.Y];
-					if (Tools.CanSet(Tile: false, tile, materialType, select, expression, magicWand, point.X, point.Y, plr))
+					ref var tile = ref Main.tile[(int)point.X, (int)point.Y];
+					if (Tools.CanSet(Tile: false, ref tile, materialType, select, expression, magicWand, point.X, point.Y, plr))
 					{
 						tile.wall = (ushort)materialType;
 						changedTileCount++;
@@ -468,8 +468,8 @@ public class Shape : WECommand
 				{
 					for (int tileY = firstEdgePoints[0].Y; tileY <= firstEdgePoints[1].Y; tileY++)
 					{
-						ITile tile = Main.tile[tileX, tileY];
-						if (Tools.CanSet(Tile: true, tile, materialType, select, expression, magicWand, tileX, tileY, plr))
+						ref var tile = ref Main.tile[tileX, tileY];
+						if (Tools.CanSet(Tile: true, ref tile, materialType, select, expression, magicWand, tileX, tileY, plr))
 						{
 							tile.wall = (ushort)materialType;
 							changedTileCount++;
@@ -484,8 +484,8 @@ public class Shape : WECommand
 				{
 					for (int tileY = secondEdgePoints[0].Y; tileY <= secondEdgePoints[1].Y; tileY++)
 					{
-						ITile tile = Main.tile[tileX, tileY];
-						if (Tools.CanSet(Tile: true, tile, materialType, select, expression, magicWand, tileX, tileY, plr))
+						ref var tile = ref Main.tile[tileX, tileY];
+						if (Tools.CanSet(Tile: true, ref tile, materialType, select, expression, magicWand, tileX, tileY, plr))
 						{
 							tile.wall = (ushort)materialType;
 							changedTileCount++;
@@ -498,8 +498,8 @@ public class Shape : WECommand
 			for (int pointIndex = 0; pointIndex < tileOutlinePoints.Length; pointIndex++)
 			{
 				WEPoint point = tileOutlinePoints[pointIndex];
-				ITile tile = Main.tile[(int)point.X, (int)point.Y];
-				if (Tools.CanSet(Tile: true, tile, materialType, select, expression, magicWand, point.X, point.Y, plr))
+				ref var tile = ref Main.tile[(int)point.X, (int)point.Y];
+				if (Tools.CanSet(Tile: true, ref tile, materialType, select, expression, magicWand, point.X, point.Y, plr))
 				{
 					SetTile(point.X, point.Y, materialType);
 					changedTileCount++;
@@ -509,8 +509,8 @@ public class Shape : WECommand
 			{
 				for (int tileY = firstEdgePoints[0].Y; tileY <= firstEdgePoints[1].Y; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
-					if (Tools.CanSet(Tile: true, tile, materialType, select, expression, magicWand, tileX, tileY, plr))
+					ref var tile = ref Main.tile[tileX, tileY];
+					if (Tools.CanSet(Tile: true, ref tile, materialType, select, expression, magicWand, tileX, tileY, plr))
 					{
 						SetTile(tileX, tileY, materialType);
 						changedTileCount++;
@@ -525,8 +525,8 @@ public class Shape : WECommand
 			{
 				for (int tileY = secondEdgePoints[0].Y; tileY <= secondEdgePoints[1].Y; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
-					if (Tools.CanSet(Tile: true, tile, materialType, select, expression, magicWand, tileX, tileY, plr))
+					ref var tile = ref Main.tile[tileX, tileY];
+					if (Tools.CanSet(Tile: true, ref tile, materialType, select, expression, magicWand, tileX, tileY, plr))
 					{
 						SetTile(tileX, tileY, materialType);
 						changedTileCount++;

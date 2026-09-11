@@ -81,7 +81,7 @@ public class RealTime : TerrariaPlugin
         orig();
         if (!Main.dayTime)
         {
-            Main.UpdateTime_SpawnTownNPCs(true);
+            Main.UpdateTime_SpawnTownNPCs();
         }
     }
     #endregion

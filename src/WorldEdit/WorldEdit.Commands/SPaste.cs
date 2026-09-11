@@ -105,11 +105,11 @@ public class SPaste : WECommand
 			{
 				int clipboardX = tileX - x;
 				int clipboardY = tileY - y;
-				if (tileX < 0 || tileY < 0 || tileX >= Main.maxTilesX || tileY >= Main.maxTilesY || (expression != null && !expression.Evaluate(worldSectionData.Tiles[clipboardX, clipboardY])))
+				if (tileX < 0 || tileY < 0 || tileX >= Main.maxTilesX || tileY >= Main.maxTilesY || (expression != null && !expression.Evaluate(ref worldSectionData.Tiles[clipboardX, clipboardY])))
 				{
 					continue;
 				}
-				ITile pastedTile = (ITile)Main.tile[tileX, tileY].Clone();
+                TileData pastedTile = (TileData) Main.tile[tileX, tileY].Clone();
 				if (tiles)
 				{
 					pastedTile = worldSectionData.Tiles[clipboardX, clipboardY];

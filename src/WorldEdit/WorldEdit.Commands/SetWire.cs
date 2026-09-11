@@ -15,7 +15,7 @@ public class SetWire : WECommand
 	public SetWire(int x, int y, int x2, int y2, MagicWand magicWand, TSPlayer plr, int wire, bool state, Expression expression)
 		: base(x, y, x2, y2, magicWand, plr)
 	{
-		_expression = expression ?? new TestExpression(_ => true);
+		_expression = expression ?? new TestExpression((ref _) => true);
 		_state = state;
 		_wire = wire;
 	}
@@ -36,8 +36,8 @@ public class SetWire : WECommand
 			{
 				for (int tileY = y; tileY <= y2; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
-					if (tile.wire() != _state && select(tileX, tileY, plr) && _expression.Evaluate(tile) && magicWand.InSelection(tileX, tileY))
+					ref var tile = ref Main.tile[tileX, tileY];
+					if (tile.wire() != _state && select(tileX, tileY, plr) && _expression.Evaluate(ref tile) && magicWand.InSelection(tileX, tileY))
 					{
 						tile.wire(_state);
 						changedWireCount++;
@@ -54,8 +54,8 @@ public class SetWire : WECommand
 			{
 				for (int tileY = y; tileY <= y2; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
-					if (tile.wire2() != _state && select(tileX, tileY, plr) && _expression.Evaluate(tile))
+					ref var tile = ref Main.tile[tileX, tileY];
+					if (tile.wire2() != _state && select(tileX, tileY, plr) && _expression.Evaluate(ref tile))
 					{
 						tile.wire2(_state);
 						changedWireCount++;
@@ -72,8 +72,8 @@ public class SetWire : WECommand
 			{
 				for (int tileY = y; tileY <= y2; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
-					if (tile.wire3() != _state && select(tileX, tileY, plr) && _expression.Evaluate(tile))
+					ref var tile = ref Main.tile[tileX, tileY];
+					if (tile.wire3() != _state && select(tileX, tileY, plr) && _expression.Evaluate(ref tile))
 					{
 						tile.wire3(_state);
 						changedWireCount++;
@@ -90,8 +90,8 @@ public class SetWire : WECommand
 			{
 				for (int tileY = y; tileY <= y2; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
-					if (tile.wire4() != _state && select(tileX, tileY, plr) && _expression.Evaluate(tile))
+					ref var tile = ref Main.tile[tileX, tileY];
+					if (tile.wire4() != _state && select(tileX, tileY, plr) && _expression.Evaluate(ref tile))
 					{
 						tile.wire4(_state);
 						changedWireCount++;

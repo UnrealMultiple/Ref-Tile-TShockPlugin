@@ -1,3 +1,4 @@
+using On.Terraria;
 using Terraria;
 using TerrariaApi.Server;
 using TShockAPI;
@@ -19,7 +20,7 @@ public class DamageRuleLoot : TerrariaPlugin
     #endregion
 
     #region 注册与释放
-    public DamageRuleLoot(Main game) : base(game) { }
+    public DamageRuleLoot(Terraria.Main game) : base(game) { }
     internal static StrikeNPC Strike = new();
     public override void Initialize()
     {
@@ -43,30 +44,13 @@ public class DamageRuleLoot : TerrariaPlugin
         }
         base.Dispose(disposing);
     }
-    #endregion
 
-    #region 配置重载读取与写入方法
-    internal static Configuration Config = new();
-    private static void ReloadConfig(ReloadEventArgs args = null!)
+    private int OnStrikeNPC(On.Terraria.NPC.orig_StrikeNPC orig, Terraria.NPC self, int Damage, float knockBack, int hitDirection, bool crit, bool fromNet, int owner, Terraria.Entity entity)
     {
-        LoadConfig();
-        args.Player.SendInfoMessage(GetString("[伤害规则掉落]重新加载配置完毕。"));
-    }
-    private static void LoadConfig()
-    {
-        Config = Configuration.Read();
-        WriteName();
-        Config.Write();
-    }
-    #endregion
-
-    #region 伤怪建表法+暴击计数法
-    private double OnStrikeNPC(On.Terraria.NPC.orig_StrikeNPC orig, NPC self, int Damage, float knockBack, int hitDirection, bool crit, bool noEffect, bool fromNet,int owner, Entity entity)
-    {
-        var damage = orig(self, Damage, knockBack, hitDirection, crit, noEffect, fromNet, owner, entity);
+        var damage = orig(self, Damage, knockBack, hitDirection, crit, fromNet, owner, entity);
         var strike = StrikeNPC.strikeNPC.Find(x => x.npcIndex == self.whoAmI && x.npcID == self.netID);
 
-        if (fromNet && entity is Player plr)
+        if (fromNet && entity is Terraria.Player plr)
         {
             if (strike != null && strike.npcName != string.Empty)
             {
@@ -115,11 +99,26 @@ public class DamageRuleLoot : TerrariaPlugin
     }
     #endregion
 
-    #region 打怪伤BOSS法
-    private double AddDamage(On.Terraria.NPC.orig_StrikeNPC orig, NPC self, int Damage, float knockBack, int hitDirection, bool crit, bool noEffect, bool fromNet,int owner, Entity entity)
+    #region 配置重载读取与写入方法
+    internal static Configuration Config = new();
+    private static void ReloadConfig(ReloadEventArgs args = null!)
     {
-        var damage = orig(self, Damage, knockBack, hitDirection, crit, noEffect, fromNet, owner,entity);
-        if (fromNet && entity is Player plr)
+        LoadConfig();
+        args.Player.SendInfoMessage(GetString("[伤害规则掉落]重新加载配置完毕。"));
+    }
+    private static void LoadConfig()
+    {
+        Config = Configuration.Read();
+        WriteName();
+        Config.Write();
+    }
+    #endregion
+
+    #region 打怪伤BOSS法
+    private int AddDamage(On.Terraria.NPC.orig_StrikeNPC orig, Terraria.NPC self, int Damage, float knockBack, int hitDirection, bool crit, bool fromNet, int owner, Terraria.Entity entity)
+    {
+        var damage = orig(self, Damage, knockBack, hitDirection, crit, fromNet, owner,entity);
+        if (fromNet && entity is Terraria.Player plr)
         {
             //不是雕像怪
             if (!self.SpawnedFromStatue)
@@ -132,7 +131,7 @@ public class DamageRuleLoot : TerrariaPlugin
                 }
 
                 //判定为FTW和天顶世界的火焰小鬼与饿鬼
-                if ((Config.FireImp && (Main.getGoodWorld || Main.zenithWorld) &&
+                if ((Config.FireImp && (Terraria.Main.getGoodWorld || Terraria.Main.zenithWorld) &&
                 self.netID == 24) || self.netID == 115 || self.netID == 116)
                 {
                     //获取肉山id
@@ -168,7 +167,7 @@ public class DamageRuleLoot : TerrariaPlugin
                                 if (Custom.Crit)
                                 {
                                     if (Damage >= Custom.Damage && Damage <= Custom.Damage2
-                                        && Main.npc[strike.npcIndex].life > Custom.LifeLimit)
+                                        && Terraria.Main.npc[strike.npcIndex].life > Custom.LifeLimit)
                                     {
                                         TransformDamage(self, Damage, plr, Custom, strike);
                                     }
@@ -176,7 +175,7 @@ public class DamageRuleLoot : TerrariaPlugin
                                 else
                                 {
                                     if (Damage >= Custom.Damage && Damage <= Custom.Damage2
-                                        && Main.npc[strike.npcIndex].life > Custom.LifeLimit && !crit)
+                                        && Terraria.Main.npc[strike.npcIndex].life > Custom.LifeLimit && !crit)
                                     {
                                         TransformDamage(self, Damage, plr, Custom, strike);
                                     }
@@ -252,7 +251,7 @@ public class DamageRuleLoot : TerrariaPlugin
                     SendKillMessage(args.npc.FullName, CustomDicts, num);
                 }
 
-                strikeNPC.RemoveAll(x => x.npcID == Custom.NPCA || Custom.NPCB.Contains(x.npcID) || x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+                strikeNPC.RemoveAll(x => x.npcID == Custom.NPCA || Custom.NPCB.Contains(x.npcID) || x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
                 CustomDicts.Clear();
                 return;
             }
@@ -261,7 +260,7 @@ public class DamageRuleLoot : TerrariaPlugin
         //毁灭者的处理
         if (args.npc.netID == 134)
         {
-            if (Main.zenithWorld && Config.MechQueen)
+            if (Terraria.Main.zenithWorld && Config.MechQueen)
             {
                 return;
             }
@@ -281,7 +280,7 @@ public class DamageRuleLoot : TerrariaPlugin
             SendKillMessage(args.npc.FullName, Destroyer, sum);
             Destroyer.Clear();
             strikeNPC.RemoveAll(x => x.npcID == 134 || x.npcID == 136 || x.npcID == 135 ||
-            x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+            x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
             return;
         }
 
@@ -299,7 +298,7 @@ public class DamageRuleLoot : TerrariaPlugin
                 }
 
                 //如果是For the worthy或天顶种子，把小鬼和饿鬼的伤害加算到肉山身上（并排除雕像怪）
-                else if (Config.FireImp && (Main.getGoodWorld || Main.zenithWorld) &&
+                else if (Config.FireImp && (Terraria.Main.getGoodWorld || Terraria.Main.zenithWorld) &&
                     !args.npc.SpawnedFromStatue && (sss.npcID == 24 || sss.npcID == 115 || sss.npcID == 116))
                 {
                     foreach (var ss in sss.PlayerOrDamage)
@@ -313,14 +312,14 @@ public class DamageRuleLoot : TerrariaPlugin
             FleshWall.Clear();
             strikeNPC.RemoveAll(x => x.npcID == 113 || x.npcID == 114 ||
             x.npcID == 24 || x.npcID == 115 || x.npcID == 116 ||
-            x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+            x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
             return;
         }
 
         // 双子魔眼
         else if (args.npc.netID == 125 || args.npc.netID == 126)
         {
-            if (Main.zenithWorld && Config.MechQueen)
+            if (Terraria.Main.zenithWorld && Config.MechQueen)
             {
                 return;
             }
@@ -350,7 +349,7 @@ public class DamageRuleLoot : TerrariaPlugin
                 ClearDictionaries(Retinazer, Spazmatism);
             }
             strikeNPC.RemoveAll(x => x.npcID == 125 || x.npcID == 126 ||
-            x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+            x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
             return;
         }
 
@@ -367,7 +366,7 @@ public class DamageRuleLoot : TerrariaPlugin
                     case 15:
                     {
                         var flag = true;
-                        foreach (var n in Main.npc)
+                        foreach (var n in Terraria.Main.npc)
                         {
                             if (n.whoAmI != args.npc.whoAmI && n.active &&
                                (n.netID == 13 || n.netID == 14 || n.netID == 15))
@@ -387,7 +386,7 @@ public class DamageRuleLoot : TerrariaPlugin
                             var sum = Eaterworld.Values.Sum();
                             SendKillMessage(args.npc.FullName, Eaterworld, sum);
                             strikeNPC.RemoveAll(x => x.npcID == 13 || x.npcID == 14 || x.npcID == 15 ||
-                            x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+                            x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
                             Eaterworld.Clear();
                             return;
                         }
@@ -406,12 +405,12 @@ public class DamageRuleLoot : TerrariaPlugin
                             if (airship == null)
                             {
                                 strikeNPC.RemoveAll(x => x.npcID == 491 || x.npcID == 492 ||
-                                x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+                                x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
                                 return;
                             }
                             SendKillMessage(airship.npcName, airship.PlayerOrDamage, airship.AllDamage);
                             strikeNPC.RemoveAll(x => x.npcID == 491 || x.npcID == 492 ||
-                            x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+                            x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
                             return;
                         }
                     }
@@ -430,7 +429,7 @@ public class DamageRuleLoot : TerrariaPlugin
                         {
                             SendKillMessage(GetString("火星飞碟"), strikeNPC[i].PlayerOrDamage, strikeNPC[i].AllDamage);
                             strikeNPC.RemoveAll(x => x.npcID == 392 || x.npcID == 393 || x.npcID == 394 ||
-                            x.npcID == 395 || x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+                            x.npcID == 395 || x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
                             return;
                         }
                     }
@@ -447,7 +446,7 @@ public class DamageRuleLoot : TerrariaPlugin
                         {
                             SendKillMessage(GetString("猪龙鱼公爵"), strikeNPC[i].PlayerOrDamage, strikeNPC[i].AllDamage);
                             strikeNPC.RemoveAll(x => x.npcID == 370 || x.npcID == 372 || x.npcID == 373 ||
-                            x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+                            x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
                             return;
                         }
                     }
@@ -478,7 +477,7 @@ public class DamageRuleLoot : TerrariaPlugin
                         }
                         SendKillMessage(GetString("月亮领主"), strikeNPC[i].PlayerOrDamage, strikeNPC[i].AllDamage);
                         strikeNPC.RemoveAll(x => x.npcID == 398 || x.npcID == 397 || x.npcID == 396 ||
-                        x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+                        x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
                         return;
                     }
 
@@ -489,7 +488,7 @@ public class DamageRuleLoot : TerrariaPlugin
                     case 130:
                     case 131:
                     {
-                        if (Main.zenithWorld && Config.MechQueen)
+                        if (Terraria.Main.zenithWorld && Config.MechQueen)
                         {
                             return;
                         }
@@ -500,7 +499,7 @@ public class DamageRuleLoot : TerrariaPlugin
                         {
                             SendKillMessage(args.npc.FullName, strikeNPC[i].PlayerOrDamage, strikeNPC[i].AllDamage);
                             strikeNPC.RemoveAll(x => x.npcID == 127 || x.npcID == 128 || x.npcID == 129 ||
-                            x.npcID == 130 || x.npcID == 131 || x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+                            x.npcID == 130 || x.npcID == 131 || x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
                             return;
                         }
                     }
@@ -516,7 +515,7 @@ public class DamageRuleLoot : TerrariaPlugin
                         {
                             SendKillMessage(args.npc.FullName, strikeNPC[i].PlayerOrDamage, strikeNPC[i].AllDamage);
                             strikeNPC.RemoveAll(x => x.npcID == 35 || x.npcID == 36 ||
-                            x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+                            x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
                             return;
                         }
                     }
@@ -534,7 +533,7 @@ public class DamageRuleLoot : TerrariaPlugin
                         {
                             SendKillMessage(args.npc.FullName, strikeNPC[i].PlayerOrDamage, strikeNPC[i].AllDamage);
                             strikeNPC.RemoveAll(x => x.npcID == 245 || x.npcID == 246 || x.npcID == 247 ||
-                            x.npcID == 248 || x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+                            x.npcID == 248 || x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
                             return;
                         }
                     }
@@ -550,7 +549,7 @@ public class DamageRuleLoot : TerrariaPlugin
                         {
                             SendKillMessage(args.npc.FullName, strikeNPC[i].PlayerOrDamage, strikeNPC[i].AllDamage);
                             strikeNPC.RemoveAll(x => x.npcID == 266 || x.npcID == 267 ||
-                            x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+                            x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
                             return;
                         }
                     }
@@ -558,7 +557,7 @@ public class DamageRuleLoot : TerrariaPlugin
                     default:
                     {
 
-                        if ((Main.zenithWorld && Config.MechQueen &&
+                        if ((Terraria.Main.zenithWorld && Config.MechQueen &&
                             args.npc.netID == 125) || args.npc.netID == 126 || args.npc.netID == 134 ||
                             args.npc.netID == 135 || args.npc.netID == 136 || args.npc.netID == 139)
                         {
@@ -581,13 +580,13 @@ public class DamageRuleLoot : TerrariaPlugin
                             SendKillMessage(args.npc.FullName, strikeNPC[i].PlayerOrDamage, strikeNPC[i].AllDamage);
                         }
                         strikeNPC.RemoveAt(i);
-                        strikeNPC.RemoveAll(x => x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+                        strikeNPC.RemoveAll(x => x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
                         return;
                     }
                 }
             }
 
-            if (i >= 0 && (strikeNPC[i].npcID != Main.npc[strikeNPC[i].npcIndex].netID || !Main.npc[strikeNPC[i].npcIndex].active))
+            if (i >= 0 && (strikeNPC[i].npcID != Terraria.Main.npc[strikeNPC[i].npcIndex].netID || !Terraria.Main.npc[strikeNPC[i].npcIndex].active))
             {
                 strikeNPC.RemoveAt(i);
                 i--;
@@ -605,7 +604,7 @@ public class DamageRuleLoot : TerrariaPlugin
             return;
         }
 
-        if (NPC.IsMechQueenUp || Main.zenithWorld)
+        if (Terraria.NPC.IsMechQueenUp || Terraria.Main.zenithWorld)
         {
             for (var i = 0; i < strikeNPC.Count; i++)
             {
@@ -634,7 +633,7 @@ public class DamageRuleLoot : TerrariaPlugin
                             }
 
                             //循环到没有活着的这些NPC则视为美杜莎死亡，标识自动通过
-                            foreach (var n in Main.npc)
+                            foreach (var n in Terraria.Main.npc)
                             {
                                 //如果当前NPC (n) 不是被杀死的NPC (args.npc) 并且还活着,则关闭标识
                                 if (n.whoAmI != args.npc.whoAmI && n.active && IDGroup(n))
@@ -655,7 +654,7 @@ public class DamageRuleLoot : TerrariaPlugin
                                 SendKillMessage(GetString("美杜莎"), MechQueen, num);
                                 strikeNPC.RemoveAll(x =>
                                 x.npcID == 125 || x.npcID == 126 || x.npcID == 127 || x.npcID == 134 ||
-                                x.npcID != Main.npc[x.npcIndex].netID || !Main.npc[x.npcIndex].active);
+                                x.npcID != Terraria.Main.npc[x.npcIndex].netID || !Terraria.Main.npc[x.npcIndex].active);
                                 MechQueen.Clear();
                                 return;
                             }
@@ -668,7 +667,7 @@ public class DamageRuleLoot : TerrariaPlugin
     }
 
     //美杜莎构成ID
-    public static bool IDGroup(NPC nPC)
+    public static bool IDGroup(Terraria.NPC nPC)
     {
         int[] id = { 125, 126, 127, 134 };
         return id.Contains(nPC.netID);

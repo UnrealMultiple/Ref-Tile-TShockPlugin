@@ -44,7 +44,7 @@ public class Cut : WECommand
 		{
 			for (int j = y; j <= y2; j++)
 			{
-				Main.tile[i, j] = (ITile)new Tile();
+				Main.tile[i, j] = new TileData();
 			}
 		}
 		if (File.Exists(clipboardPath))

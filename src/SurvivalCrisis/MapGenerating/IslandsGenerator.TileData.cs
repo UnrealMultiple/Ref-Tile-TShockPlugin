@@ -10,7 +10,7 @@ namespace SurvivalCrisis.MapGenerating
 {
 	public partial class IslandsGenerator
 	{
-		private struct TileData
+		private struct TileDataPack
 		{
 			public ushort Type;
 			public ushort Wall;
@@ -22,9 +22,9 @@ namespace SurvivalCrisis.MapGenerating
 			public byte BTileHeader3;
 			public ushort STileHeader;
 
-			public ITile ToTile()
+			public TileData ToTile()
 			{
-				return new Tile()
+				return new TileData()
 				{
 					sTileHeader = STileHeader,
 					bTileHeader = BTileHeader1,
@@ -37,9 +37,9 @@ namespace SurvivalCrisis.MapGenerating
 					frameY = FrameY
 				};
 			}
-			public static TileData FromTile(ITile tile)
+			public static TileDataPack FromTile(TileData tile)
 			{
-				return new TileData
+				return new TileDataPack
 				{
 					Type = tile.type,
 					Wall = tile.wall,
@@ -70,12 +70,12 @@ namespace SurvivalCrisis.MapGenerating
 			{
 				get;
 			}
-			private TileData[,] tiles;
+			private TileDataPack[,] tiles;
 			internal TileBlockData(int width, int height, string identifier = null)
 			{
 				Width = width;
 				Height = height;
-				tiles = new TileData[Width, Height];
+				tiles = new TileDataPack[Width, Height];
 				Identifier = identifier ?? SurvivalCrisis.Rand.GenerateStr(10);
 			}
 			internal void AffixTo(in TileSection section, bool replaceTile = false)
@@ -179,7 +179,7 @@ namespace SurvivalCrisis.MapGenerating
 				{
 					for (int y = 0; y < section.Height; y++)
 					{
-						data.tiles[x, y] = TileData.FromTile(section[x, y]);
+						data.tiles[x, y] = TileDataPack.FromTile(section[x, y]);
 					}
 				}
 				return data;

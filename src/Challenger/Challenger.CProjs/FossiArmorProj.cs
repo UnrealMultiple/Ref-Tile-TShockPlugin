@@ -27,7 +27,7 @@ public class FossiArmorProj : CProjectile
             var val = Challenger.NearestHostileNPC(this.proj.Center, any6 * 100);
             if (val != null)
             {
-                var num = Collect.MyNewProjectile(Projectile.GetNoneSource(), this.proj.Center, this.proj.Center.DirectionTo(val.Center) * any2, any, any3, any4, this.proj.owner);
+                var num = Projectile.NewProjectile(Projectile.GetNoneSource(), this.proj.Center, this.proj.Center.DirectionTo(val.Center) * any2, any, any3, any4, this.proj.owner);
                 Update(num);
             }
         }
@@ -35,7 +35,7 @@ public class FossiArmorProj : CProjectile
 
     public static FossiArmorProj NewCProjectile(Vector2 position, Vector2 velocity, int owner, float[] ai, int lable)
     {
-        var num = Collect.MyNewProjectile(Projectile.GetNoneSource(), position, velocity, 597, 0, 0f, owner);
+        var num = Projectile.NewProjectile(Projectile.GetNoneSource(), position, velocity, 597, 0, 0f, owner);
         var fossiArmorProj = new FossiArmorProj(Main.projectile[num], ai, lable);
         fossiArmorProj.proj.tileCollide = false;
         Collect.cprojs[num] = fossiArmorProj;

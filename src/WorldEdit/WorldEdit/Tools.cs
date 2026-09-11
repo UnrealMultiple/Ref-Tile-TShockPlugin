@@ -206,7 +206,7 @@ public static class Tools
         {
             for (int tileY = 0; tileY < height; tileY++)
             {
-				worldSectionData.Tiles[tileX, tileY] = (ITile)(object)compressedReader.ReadTile();
+				worldSectionData.Tiles[tileX, tileY] = (TileData)compressedReader.ReadTile();
             }
         }
         try
@@ -263,7 +263,7 @@ public static class Tools
         {
             for (int tileY = 0; tileY < height; tileY++)
             {
-                worldSectionData.Tiles[tileX, tileY] = (ITile)(object)binaryReader.ReadTileOld();
+                worldSectionData.Tiles[tileX, tileY] = (TileData)binaryReader.ReadTileOld();
             }
         }
         try
@@ -291,9 +291,9 @@ public static class Tools
         return LoadWorldDataOld(File.Open(path, FileMode.Open));
     }
 
-    public static Tile ReadTile(this BinaryReader reader)
+    public static TileData ReadTile(this BinaryReader reader)
     {
-        Tile val = new Tile
+        TileData val = new TileData
         {
             sTileHeader = (ushort) reader.ReadInt16(),
             bTileHeader = reader.ReadByte(),
@@ -313,9 +313,9 @@ public static class Tools
         return val;
     }
 
-    private static Tile ReadTileOld(this BinaryReader reader)
+    private static TileData ReadTileOld(this BinaryReader reader)
     {
-        Tile val = new Tile
+        TileData val = new TileData
         {
             sTileHeader = (ushort) reader.ReadInt16(),
             bTileHeader = reader.ReadByte(),
@@ -697,7 +697,7 @@ public static class Tools
         SaveWorldSection(x, y, x2, y2).Write(path);
     }
 
-    public static void Write(this BinaryWriter writer, ITile tile)
+    public static void Write(this BinaryWriter writer, TileData tile)
     {
         writer.Write(tile.sTileHeader);
         writer.Write(tile.bTileHeader);
@@ -786,9 +786,9 @@ public static class Tools
         return true;
     }
 
-    public static bool CanSet(bool Tile, ITile tile, int type, Selection selection, Expression expression, MagicWand magicWand, int x, int y, TSPlayer player)
+    public static bool CanSet(bool Tile, ref TileData tile, int type, Selection selection, Expression expression, MagicWand magicWand, int x, int y, TSPlayer player)
     {
-        return (!Tile) ? (tile.wall != type && selection(x, y, player) && expression.Evaluate(tile) && magicWand.InSelection(x, y)) : (((type >= 0 && (!tile.active() || tile.type != type)) || (type == -1 && tile.active()) || (type == -2 && (tile.liquid == 0 || tile.liquidType() != 1)) || (type == -3 && (tile.liquid == 0 || tile.liquidType() != 2)) || (type == -4 && (tile.liquid == 0 || tile.liquidType() != 0))) && selection(x, y, player) && expression.Evaluate(tile) && magicWand.InSelection(x, y));
+        return (!Tile) ? (tile.wall != type && selection(x, y, player) && expression.Evaluate(ref tile) && magicWand.InSelection(x, y)) : (((type >= 0 && (!tile.active() || tile.type != type)) || (type == -1 && tile.active()) || (type == -2 && (tile.liquid == 0 || tile.liquidType() != 1)) || (type == -3 && (tile.liquid == 0 || tile.liquidType() != 2)) || (type == -4 && (tile.liquid == 0 || tile.liquidType() != 0))) && selection(x, y, player) && expression.Evaluate(ref tile) && magicWand.InSelection(x, y));
     }
 
     public static WEPoint[] CreateLine(int x1, int y1, int x2, int y2)

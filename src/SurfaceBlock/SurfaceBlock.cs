@@ -201,7 +201,7 @@ public class SurfaceBlock : LazyPlugin
     #endregion
 
     #region 恢复被破坏的图格方法
-    private static readonly Dictionary<(int, int), Tile> Orig = new Dictionary<(int, int), Tile>();
+    private static readonly Dictionary<(int, int), TileData> Orig = new Dictionary<(int, int), TileData>();
     private void OnTileEdit(object sender, GetDataHandlers.TileEditEventArgs args)
     {
         var plr = args.Player;

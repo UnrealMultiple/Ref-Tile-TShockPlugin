@@ -14,7 +14,7 @@ public class Inactive : WECommand
 		: base(x, y, x2, y2, magicWand, plr)
 	{
 		_inactiveType = inacType;
-		_expression = expression ?? new TestExpression(_ => true);
+		_expression = expression ?? new TestExpression((ref _) => true);
 	}
 
 	public override void Execute()
@@ -33,8 +33,8 @@ public class Inactive : WECommand
 			{
 				for (int tileY = y; tileY <= y2; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
-					if (tile.active() && !tile.inActive() && select(tileX, tileY, plr) && _expression.Evaluate(tile) && magicWand.InSelection(tileX, tileY))
+					ref var tile = ref Main.tile[tileX, tileY];
+					if (tile.active() && !tile.inActive() && select(tileX, tileY, plr) && _expression.Evaluate(ref tile) && magicWand.InSelection(tileX, tileY))
 					{
 						tile.inActive(true);
 						changedTileCount++;
@@ -51,8 +51,8 @@ public class Inactive : WECommand
 			{
 				for (int tileY = y; tileY <= y2; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
-					if (tile.inActive() && select(tileX, tileY, plr) && _expression.Evaluate(tile))
+					ref var tile = ref Main.tile[tileX, tileY];
+					if (tile.inActive() && select(tileX, tileY, plr) && _expression.Evaluate(ref tile))
 					{
 						tile.inActive(false);
 						changedTileCount++;
@@ -69,8 +69,8 @@ public class Inactive : WECommand
 			{
 				for (int tileY = y; tileY <= y2; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
-					if (tile.active() && select(tileX, tileY, plr) && _expression.Evaluate(tile))
+					ref var tile = ref Main.tile[tileX, tileY];
+					if (tile.active() && select(tileX, tileY, plr) && _expression.Evaluate(ref tile))
 					{
 						tile.inActive(!tile.inActive());
 						changedTileCount++;

@@ -15,8 +15,8 @@ namespace SurvivalCrisis
         public static int ForcePlaceChest(Point where)
         {
             TileSection section = new TileSection(where.X, where.Y - 1, 2, 3);
-            Tile copy0 = new Tile(section[0, 2]);
-            Tile copy1 = new Tile(section[1, 2]);
+            TileData copy0 = new TileData(section[0, 2]);
+            TileData copy1 = new TileData(section[1, 2]);
             section.KillAllTile();
             section.PlaceTileAt(new Point(0, 2), TileID.WoodBlock);
             section.PlaceTileAt(new Point(1, 2), TileID.WoodBlock);

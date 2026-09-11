@@ -270,12 +270,12 @@ public class Map
         var width = reader.ReadInt32();
         var height = reader.ReadInt32();
 
-        var tiles = new Tile[width, height];
+        var tiles = new TileData[width, height];
         for (var x = 0; x < width; x++)
         {
             for (var y = 0; y < height; y++)
             {
-                var tile = new Tile
+                var tile = new TileData
                 {
                     bTileHeader = reader.ReadByte(),
                     bTileHeader2 = reader.ReadByte(),

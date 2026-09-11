@@ -134,7 +134,7 @@ public class BloodBagProj : CProjectile
 
     public static BloodBagProj NewCProjectile(Vector2 position, Vector2 velocity, int owner, int lable, float[] ai)
     {
-        var num = Collect.MyNewProjectile(Projectile.GetNoneSource(), position, velocity, 125, 0, 0f, owner);
+        var num = Projectile.NewProjectile(Projectile.GetNoneSource(), position, velocity, 125, 0, 0f, owner);
         var bloodBagProj = new BloodBagProj(Main.projectile[num], ai, lable);
         bloodBagProj.ai[1] = bloodBagProj.proj.timeLeft;
         Collect.cprojs[num] = bloodBagProj;

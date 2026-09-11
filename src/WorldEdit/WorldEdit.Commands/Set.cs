@@ -14,7 +14,7 @@ public class Set : WECommand
 		: base(x, y, x2, y2, magicWand, plr)
 	{
 		_tileType = tileType;
-		_expression = expression ?? new TestExpression(_ => true);
+		_expression = expression ?? new TestExpression((ref _) => true);
 	}
 
 	public override void Execute()
@@ -29,7 +29,7 @@ public class Set : WECommand
 		{
 			for (int tileY = y; tileY <= y2; tileY++)
 			{
-				if (Tools.CanSet(Tile: true, Main.tile[tileX, tileY], _tileType, select, _expression, magicWand, tileX, tileY, plr))
+				if (Tools.CanSet(Tile: true, ref Main.tile[tileX, tileY], _tileType, select, _expression, magicWand, tileX, tileY, plr))
 				{
 					SetTile(tileX, tileY, _tileType);
 					changedTileCount++;

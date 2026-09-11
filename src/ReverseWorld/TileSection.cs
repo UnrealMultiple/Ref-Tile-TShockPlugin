@@ -36,13 +36,9 @@ public readonly struct TileSection
     public int CenterY => this.Y + (this.Height / 2);
     public int Size => this.Width * this.Height;
 
-    public ITile this[int x, int y]
-    {
-        get => Main.tile[this.X + x, this.Y + y];
-        set => Main.tile[this.X + x, this.Y + y] = value;
-    }
+    public ref TileData this[int x, int y] => ref Main.tile[this.X + x, this.Y + y];
 
-    public ITile this[Point point]
+    public TileData this[Point point]
     {
         get => this[point.X, point.Y];
         set => this[point.X, point.Y] = value;

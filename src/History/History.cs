@@ -508,7 +508,7 @@ public class History : TerrariaPlugin
         return dim;
     }
     //This finds the 0,0 of a furniture
-    static Vector2 AdjustDest(ref Vector2 dest, ITile tile, int which, int div, byte style)
+    static Vector2 AdjustDest(ref Vector2 dest, ref TileData tile, int which, int div, byte style)
     {
         var relative = new Vector2(0, 0);
         if (dest.X < 0)
@@ -613,7 +613,7 @@ public class History : TerrariaPlugin
     {
         var which = 10; // An invalid which, to skip cases if it never changes.
         var div = 1;
-        var tile = Main.tile[x, y];
+        ref var tile = ref Main.tile[x, y];
         GetPlaceData(tile.type, ref which, ref div);
         switch (which)
         {
@@ -648,7 +648,7 @@ public class History : TerrariaPlugin
         }
 
         var dest = DestFrame(tile.type);
-        var relative = AdjustDest(ref dest, tile, which, div, style);
+        var relative = AdjustDest(ref dest, ref tile, which, div, style);
         if (origin)
         {
             dest = new Vector2(0, 0);
@@ -699,7 +699,7 @@ public class History : TerrariaPlugin
 
         foreach (var index in breakableWallIndex) { this.breakableWall[index] = true; }
     }
-    void LogEdit(byte etype, ITile tile, int X, int Y, ushort type, string account, List<Vector2> done, byte style = 0, int alt = 0, int random = -1, bool direction = false)
+    void LogEdit(byte etype, ref TileData tile, int X, int Y, ushort type, string account, List<Vector2> done, byte style = 0, int alt = 0, int random = -1, bool direction = false)
     {
         switch (etype)
         {
@@ -734,12 +734,12 @@ public class History : TerrariaPlugin
                         case 124: //wooden beam, breaks sides only
                             if (Main.tile[X - 1, Y].active() && this.breakableSides[Main.tile[X - 1, Y].type])
                             {
-                                this.LogEdit(0, Main.tile[X - 1, Y], X - 1, Y, 0, account, done);
+                                this.LogEdit(0, ref Main.tile[X - 1, Y], X - 1, Y, 0, account, done);
                             }
 
                             if (Main.tile[X + 1, Y].active() && this.breakableSides[Main.tile[X + 1, Y].type])
                             {
-                                this.LogEdit(0, Main.tile[X + 1, Y], X + 1, Y, 0, account, done);
+                                this.LogEdit(0, ref Main.tile[X + 1, Y], X + 1, Y, 0, account, done);
                             }
 
                             break;
@@ -756,7 +756,7 @@ public class History : TerrariaPlugin
                             {
                                 if (Main.tile[X + i, Y - 2].active() && this.breakableBottom[Main.tile[X + i, Y - 2].type])
                                 {
-                                    this.LogEdit(0, Main.tile[X + i, Y - 2], X + i, Y - 2, 0, account, done);
+                                    this.LogEdit(0, ref Main.tile[X + i, Y - 2], X + i, Y - 2, 0, account, done);
                                 }
                             }
 
@@ -764,12 +764,12 @@ public class History : TerrariaPlugin
                             {
                                 if (Main.tile[X - 2, Y + i].active() && this.breakableSides[Main.tile[X - 2, Y + i].type])
                                 {
-                                    this.LogEdit(0, Main.tile[X - 2, Y + i], X - 2, Y + i, 0, account, done);
+                                    this.LogEdit(0, ref Main.tile[X - 2, Y + i], X - 2, Y + i, 0, account, done);
                                 }
 
                                 if (Main.tile[X, Y + i].active() && this.breakableSides[Main.tile[X, Y + i].type])
                                 {
-                                    this.LogEdit(0, Main.tile[X, Y + i], X, Y + i, 0, account, done);
+                                    this.LogEdit(0, ref Main.tile[X, Y + i], X, Y + i, 0, account, done);
                                 }
                             }
                             break;
@@ -778,18 +778,18 @@ public class History : TerrariaPlugin
                             {
                                 if (Main.tile[X + i, Y - 1].active() && this.breakableBottom[Main.tile[X + i, Y - 1].type])
                                 {
-                                    this.LogEdit(0, Main.tile[X + i, Y - 1], X + i, Y - 1, 0, account, done);
+                                    this.LogEdit(0, ref Main.tile[X + i, Y - 1], X + i, Y - 1, 0, account, done);
                                 }
                             }
 
                             if (Main.tile[X - 2, Y].active() && this.breakableSides[Main.tile[X - 2, Y].type])
                             {
-                                this.LogEdit(0, Main.tile[X - 2, Y], X - 2, Y, 0, account, done);
+                                this.LogEdit(0, ref Main.tile[X - 2, Y], X - 2, Y, 0, account, done);
                             }
 
                             if (Main.tile[X + 2, Y].active() && this.breakableSides[Main.tile[X + 2, Y].type])
                             {
-                                this.LogEdit(0, Main.tile[X + 2, Y], X + 2, Y, 0, account, done);
+                                this.LogEdit(0, ref Main.tile[X + 2, Y], X + 2, Y, 0, account, done);
                             }
 
                             break;
@@ -808,7 +808,7 @@ public class History : TerrariaPlugin
                             //Break anything at top
                             if (Main.tile[X, topY].active() && this.breakableBottom[Main.tile[X, topY].type])
                             {
-                                this.LogEdit(0, Main.tile[X, topY], X, topY, 0, account, done);
+                                this.LogEdit(0, ref Main.tile[X, topY], X, topY, 0, account, done);
                             }
                             //TO-DO: Atm, we'll just keep the record saying they broke the top block. We lose some data (type of sand), but I don't feel like
                             // making a workaround for that just yet.
@@ -823,7 +823,7 @@ public class History : TerrariaPlugin
                             //Break anything at top
                             if (Main.tile[X, topY].active() && this.breakableBottom[Main.tile[X, topY].type])
                             {
-                                this.LogEdit(0, Main.tile[X, topY], X, topY, 0, account, done);
+                                this.LogEdit(0, ref Main.tile[X, topY], X, topY, 0, account, done);
                             }
 
                             topY++;
@@ -832,12 +832,12 @@ public class History : TerrariaPlugin
                                 //log from top of stack down, so reverting goes bottom->top
                                 if (Main.tile[X - 1, topY].active() && this.breakableSides[Main.tile[X - 1, topY].type])
                                 {
-                                    this.LogEdit(0, Main.tile[X - 1, topY], X - 1, topY, 0, account, done);
+                                    this.LogEdit(0, ref Main.tile[X - 1, topY], X - 1, topY, 0, account, done);
                                 }
 
                                 if (Main.tile[X + 1, topY].active() && this.breakableSides[Main.tile[X + 1, topY].type])
                                 {
-                                    this.LogEdit(0, Main.tile[X + 1, topY], X + 1, topY, 0, account, done);
+                                    this.LogEdit(0, ref Main.tile[X + 1, topY], X + 1, topY, 0, account, done);
                                 }
 
                                 this.Queue(account, X, topY, 0, 239, pStyle, (short) (Main.tile[X, topY].color() + ((Main.tile[X, topY].halfBrick() ? 1 : 0) << 7)));
@@ -883,22 +883,22 @@ public class History : TerrariaPlugin
                             {
                                 if (Main.tile[X, Y - 1].active() && this.breakableBottom[Main.tile[X, Y - 1].type])
                                 {
-                                    this.LogEdit(0, Main.tile[X, Y - 1], X, Y - 1, 0, account, done);
+                                    this.LogEdit(0, ref Main.tile[X, Y - 1], X, Y - 1, 0, account, done);
                                 }
 
                                 if (Main.tile[X, Y + 1].active() && this.breakableTop[Main.tile[X, Y + 1].type])
                                 {
-                                    this.LogEdit(0, Main.tile[X, Y + 1], X, Y + 1, 0, account, done);
+                                    this.LogEdit(0, ref Main.tile[X, Y + 1], X, Y + 1, 0, account, done);
                                 }
 
                                 if (Main.tile[X - 1, Y].active() && this.breakableSides[Main.tile[X - 1, Y].type])
                                 {
-                                    this.LogEdit(0, Main.tile[X - 1, Y], X - 1, Y, 0, account, done);
+                                    this.LogEdit(0, ref Main.tile[X - 1, Y], X - 1, Y, 0, account, done);
                                 }
 
                                 if (Main.tile[X + 1, Y].active() && this.breakableSides[Main.tile[X + 1, Y].type])
                                 {
-                                    this.LogEdit(0, Main.tile[X + 1, Y], X + 1, Y, 0, account, done);
+                                    this.LogEdit(0, ref Main.tile[X + 1, Y], X + 1, Y, 0, account, done);
                                 }
                             }
                             else if (Main.tileTable[tileType])
@@ -933,7 +933,7 @@ public class History : TerrariaPlugin
                                 {
                                     if (Main.tile[X + i, Y - height].active() && this.breakableBottom[Main.tile[X + i, Y - height].type])
                                     {
-                                        this.LogEdit(0, Main.tile[X + i, Y - height], X + i, Y - height, 0, account, done);
+                                        this.LogEdit(0, ref Main.tile[X + i, Y - height], X + i, Y - height, 0, account, done);
                                     }
                                 }
                             }
@@ -954,7 +954,7 @@ public class History : TerrariaPlugin
                     //break things on walls
                     if (Main.tile[X, Y].active() && this.breakableWall[Main.tile[X, Y].type])
                     {
-                        this.LogEdit(0, tile, X, Y, 0, account, done);
+                        this.LogEdit(0, ref tile, X, Y, 0, account, done);
                     }
 
                     this.Queue(account, X, Y, 2, Main.tile[X, Y].wall, 0, Main.tile[X, Y].wallColor());
@@ -1120,7 +1120,7 @@ public class History : TerrariaPlugin
                             return;
                         }
 
-                        this.LogEdit(etype, Main.tile[X, Y], X, Y, type, logName, new List<Vector2>(), style);
+                        this.LogEdit(etype, ref Main.tile[X, Y], X, Y, type, logName, new List<Vector2>(), style);
                     }
                 }
                 break;
@@ -1150,7 +1150,7 @@ public class History : TerrariaPlugin
                     }
                     else
                     {
-                        this.LogEdit(1, Main.tile[X, Y], X, Y, type, logName, new List<Vector2>(), (byte) style, alt, rand, dir);
+                        this.LogEdit(1, ref Main.tile[X, Y], X, Y, type, logName, new List<Vector2>(), (byte) style, alt, rand, dir);
                     }
                 }
                 break;
@@ -1176,7 +1176,7 @@ public class History : TerrariaPlugin
                         }
                         else
                         {
-                            this.LogEdit(1, Main.tile[X, Y], X, Y, 21, logName, new List<Vector2>(), style2);
+                            this.LogEdit(1, ref Main.tile[X, Y], X, Y, 21, logName, new List<Vector2>(), style2);
                         }
                         return;
                     }
@@ -1208,7 +1208,7 @@ public class History : TerrariaPlugin
                         }
                         else
                         {
-                            this.LogEdit(1, Main.tile[X, Y], X, Y, 88, logName, new List<Vector2>(), style2);
+                            this.LogEdit(1, ref Main.tile[X, Y], X, Y, 88, logName, new List<Vector2>(), style2);
                         }
                         return;
                     }

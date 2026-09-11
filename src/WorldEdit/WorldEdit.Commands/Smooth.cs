@@ -11,7 +11,7 @@ public class Smooth : WECommand
 	public Smooth(int x, int y, int x2, int y2, MagicWand magicWand, TSPlayer plr, Expression expression)
 		: base(x, y, x2, y2, magicWand, plr)
 	{
-		_expression = expression ?? new TestExpression(_ => true);
+		_expression = expression ?? new TestExpression((ref _) => true);
 	}
 
 	public override void Execute()
@@ -58,12 +58,12 @@ public class Smooth : WECommand
 		{
 			for (int tileY = y; tileY <= y2; tileY++)
 			{
-				ITile tile = Main.tile[tileX, tileY];
+				ref var tile = ref Main.tile[tileX, tileY];
 				bool leftSelected = magicWand.dontCheck ? Main.tile[tileX - 1, tileY].active() : magicWand.InSelection(tileX - 1, tileY);
 				bool rightSelected = magicWand.dontCheck ? Main.tile[tileX + 1, tileY].active() : magicWand.InSelection(tileX + 1, tileY);
 				bool topSelected = magicWand.dontCheck ? Main.tile[tileX, tileY - 1].active() : magicWand.InSelection(tileX, tileY - 1);
 				bool bottomSelected = magicWand.dontCheck ? Main.tile[tileX, tileY + 1].active() : magicWand.InSelection(tileX, tileY + 1);
-				if (tile.active() && tile.slope() == 0 && _expression.Evaluate(tile) && magicWand.InSelection(tileX, tileY))
+				if (tile.active() && tile.slope() == 0 && _expression.Evaluate(ref tile) && magicWand.InSelection(tileX, tileY))
 				{
 					if (leftSelected && topSelected && !bottomSelected && !rightSelected)
 					{

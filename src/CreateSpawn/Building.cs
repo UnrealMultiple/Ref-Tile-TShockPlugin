@@ -10,7 +10,7 @@ public class Building
 {
     public int Width { get; set; }
     public int Height { get; set; }
-    public Tile[,]? Tiles { get; set; }
+    public TileData[,]? Tiles { get; set; }
     public Point Origin { get; set; }
 
     public List<ChestItems>? ChestItems { get; set; }

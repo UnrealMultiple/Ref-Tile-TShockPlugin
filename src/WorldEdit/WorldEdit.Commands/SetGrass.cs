@@ -15,7 +15,7 @@ public class SetGrass : WECommand
 	public SetGrass(int x, int y, int x2, int y2, MagicWand magicWand, TSPlayer plr, string grass, Expression expression)
 		: base(x, y, x2, y2, magicWand, plr)
 	{
-		_expression = expression ?? new TestExpression(_ => true);
+		_expression = expression ?? new TestExpression((ref _) => true);
 		_grass = grass;
 	}
 
@@ -67,7 +67,7 @@ public class SetGrass : WECommand
 			for (int tileY = y; tileY <= y2; tileY++)
 			{
 				bool hasExposedEdge = !Main.tile[tileX - 1, tileY - 1].active() || !Main.tile[tileX - 1, tileY + 1].active() || !Main.tile[tileX + 1, tileY - 1].active() || !Main.tile[tileX + 1, tileY + 1].active() || !Main.tile[tileX - 1, tileY].active() || !Main.tile[tileX + 1, tileY].active() || !Main.tile[tileX, tileY - 1].active() || !Main.tile[tileX, tileY + 1].active();
-				if (Main.tile[tileX, tileY].active() && hasExposedEdge && _expression.Evaluate(Main.tile[tileX, tileY]) && Main.tile[tileX, tileY].type == dirtTileType && magicWand.InSelection(tileX, tileY))
+				if (Main.tile[tileX, tileY].active() && hasExposedEdge && _expression.Evaluate(ref Main.tile[tileX, tileY]) && Main.tile[tileX, tileY].type == dirtTileType && magicWand.InSelection(tileX, tileY))
 				{
 					Main.tile[tileX, tileY].type = grassTileType;
 					changedGrassCount++;

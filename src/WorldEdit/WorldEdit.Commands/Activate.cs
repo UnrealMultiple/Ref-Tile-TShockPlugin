@@ -33,7 +33,7 @@ public class Activate : WECommand
 			{
 				for (int tileY = y; tileY <= y2; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
+					ref var tile = ref Main.tile[tileX, tileY];
 					if ((tile.type == 55 || tile.type == 85 || tile.type == 425) && tile.frameX % 36 == 0 && tile.frameY == 0 && Sign.ReadSign(tileX, tileY, false) == -1)
 					{
 						if (Sign.ReadSign(tileX, tileY, true) == -1)
@@ -58,7 +58,7 @@ public class Activate : WECommand
 			{
 				for (int tileY = y; tileY <= y2; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
+                    ref TileData tile = ref Main.tile[tileX, tileY];
 					if ((tile.type == 21 || tile.type == 467 || tile.type == 88) && tile.frameX % 36 == 0 && tile.frameY % 36 == 0 && Chest.FindChest(tileX, tileY) == -1)
 					{
 						if (Chest.CreateChest(tileX, tileY, -1) == -1)
@@ -83,7 +83,7 @@ public class Activate : WECommand
 			{
 				for (int tileY = y; tileY <= y2; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
+					ref var tile = ref Main.tile[tileX, tileY];
 					if (tile.type == 395 && tile.frameX % 36 == 0 && tile.frameY == 0 && TEItemFrame.Find(tileX, tileY) == -1)
 					{
 						if (TEItemFrame.Place(tileX, tileY) == -1)
@@ -155,7 +155,7 @@ public class Activate : WECommand
 		{
 			for (int tileY = y; tileY <= y2; tileY++)
 			{
-				ITile tile = Main.tile[tileX, tileY];
+				ref var tile = ref Main.tile[tileX, tileY];
 				if (tile.type != tileType || (frameWidth.HasValue && (tile.frameX % frameWidth.Value != 0 || tile.frameY != 0)) || findEntity(tileX, tileY) != -1)
 				{
 					continue;

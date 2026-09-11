@@ -19,7 +19,7 @@ public class Move : WECommand
 	{
 		_down = down;
 		_right = right;
-		_expression = expression ?? new TestExpression(_ => true);
+		_expression = expression ?? new TestExpression((ref _) => true);
 	}
 
 	public override void Execute()
@@ -59,9 +59,9 @@ public class Move : WECommand
 		{
 			for (int tileY = y; tileY <= y2; tileY++)
 			{
-				if (magicWand.InSelection(tileX, tileY) && _expression.Evaluate(Main.tile[tileX, tileY]))
+				if (magicWand.InSelection(tileX, tileY) && _expression.Evaluate(ref Main.tile[tileX, tileY]))
 				{
-					Main.tile[tileX, tileY] = new Tile();
+					Main.tile[tileX, tileY] = new TileData();
 					movedTileCount++;
 				}
 			}
@@ -72,7 +72,7 @@ public class Move : WECommand
 			{
 				int sourceX = tileX - destinationX;
 				int sourceY = tileY - destinationY;
-				if (tileX >= 0 && tileY >= 0 && tileX < Main.maxTilesX && tileY < Main.maxTilesY && magicWand.InSelection(tileX - _right, tileY - _down) && _expression.Evaluate(worldSectionData.Tiles[sourceX, sourceY]))
+				if (tileX >= 0 && tileY >= 0 && tileX < Main.maxTilesX && tileY < Main.maxTilesY && magicWand.InSelection(tileX - _right, tileY - _down) && _expression.Evaluate(ref worldSectionData.Tiles[sourceX, sourceY]))
 				{
 					Main.tile[tileX, tileY] = worldSectionData.Tiles[sourceX, sourceY];
 				}

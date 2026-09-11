@@ -26,7 +26,7 @@ public class Scale : WECommand
 		if (_addition)
 		{
 			using BinaryWriter writer = WorldSectionData.WriteHeader(clipboardPath, 0, 0, worldSectionData.Width * _scale, worldSectionData.Height * _scale);
-			List<ITile> sourceRow = new List<ITile>();
+			List<TileData> sourceRow = new List<TileData>();
 			for (int tileX = 0; tileX < worldSectionData.Width; tileX++)
 			{
 				for (int tileY = 0; tileY < worldSectionData.Height; tileY++)
@@ -42,7 +42,7 @@ public class Scale : WECommand
 					}
 					for (int verticalCopy = 0; verticalCopy < _scale - 1; verticalCopy++)
 					{
-						foreach (ITile tile in sourceRow)
+						foreach (TileData tile in sourceRow)
 						{
 							for (int horizontalCopy = 0; horizontalCopy < _scale; horizontalCopy++)
 							{
@@ -62,20 +62,20 @@ public class Scale : WECommand
 			int wholeHeightGroups = worldSectionData.Height / _scale;
 			int targetWidth = widthRemainder == 0 ? wholeWidthGroups : wholeWidthGroups + 1;
 			int targetHeight = heightRemainder == 0 ? wholeHeightGroups : wholeHeightGroups + 1;
-			ITile[,] scaledTiles = new ITile[targetWidth, targetHeight];
+            TileData[,] scaledTiles = new TileData[targetWidth, targetHeight];
 			for (int targetX = 0; targetX < targetWidth; targetX++)
 			{
 				for (int targetY = 0; targetY < targetHeight; targetY++)
 				{
-					List<ITile> sourceTiles = new List<ITile>();
+					List<TileData> sourceTiles = new List<TileData>();
 					for (int sourceXOffset = 0; sourceXOffset < _scale; sourceXOffset++)
 					{
 						for (int sourceYOffset = 0; sourceYOffset < _scale; sourceYOffset++)
 						{
-							ITile sourceTile;
+                            TileData sourceTile;
 							if (targetX * _scale + sourceXOffset >= worldSectionData.Width || targetY * _scale + sourceYOffset >= worldSectionData.Height)
 							{
-								sourceTile = new Tile();
+								sourceTile = new TileData();
 							}
 							else
 							{

@@ -65,7 +65,7 @@ public class Honey : CProjectile
         {
             if (Challenger.Timer % any8 == 0)
             {
-                var num2 = Collect.MyNewProjectile(this.proj.GetProjectileSource_FromThis(), this.proj.Center, Vector2.Zero, any4, any5, any6, this.proj.owner);
+                var num2 = Projectile.NewProjectile(this.proj.GetProjectileSource_FromThis(), this.proj.Center, Vector2.Zero, any4, any5, any6, this.proj.owner);
                 Main.projectile[num2].usesLocalNPCImmunity = true;
                 Update(num2);
                 this.CKill();
@@ -83,7 +83,7 @@ public class Honey : CProjectile
         var any2 = Challenger.config.HivePack_2;
         var any3 = Challenger.config.HivePack_3;
 
-        var num = Collect.MyNewProjectile(Projectile.GetNoneSource(), position, velocity, any, any2, any3, owner, 0f, lable - 1);
+        var num = Projectile.NewProjectile(Projectile.GetNoneSource(), position, velocity, any, any2, any3, owner, 0f, lable - 1);
         var honey = new Honey(Main.projectile[num], ai, lable);
         honey.ai[0] = honey.proj.timeLeft;
         Collect.cprojs[num] = honey;

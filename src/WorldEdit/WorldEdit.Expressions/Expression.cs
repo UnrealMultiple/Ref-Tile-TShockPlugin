@@ -8,5 +8,5 @@ public abstract class Expression
 
 	public Expression Right;
 
-	public abstract bool Evaluate(ITile tile);
+	public abstract bool Evaluate(ref TileData tile);
 }

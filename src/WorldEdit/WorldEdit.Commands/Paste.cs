@@ -95,7 +95,7 @@ public class Paste : WECommand
 			{
 				int clipboardX = tileX - x;
 				int clipboardY = tileY - y;
-				if (tileX >= 0 && tileY >= 0 && tileX < Main.maxTilesX && tileY < Main.maxTilesY && (expression == null || expression.Evaluate(mode_MainBlocks ? Main.tile[tileX, tileY] : worldSectionData.Tiles[clipboardX, clipboardY])))
+				if (tileX >= 0 && tileY >= 0 && tileX < Main.maxTilesX && tileY < Main.maxTilesY && (expression == null || expression.Evaluate(ref (mode_MainBlocks ? ref Main.tile[tileX, tileY] : ref worldSectionData.Tiles[clipboardX, clipboardY]))))
 				{
 					Main.tile[tileX, tileY] = worldSectionData.Tiles[clipboardX, clipboardY];
 				}

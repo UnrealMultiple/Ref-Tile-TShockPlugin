@@ -23,7 +23,7 @@ public class OutlineWall : WECommand
 	{
 		_wallType = wallType;
 		_color = color;
-		_expression = expression ?? new TestExpression(_ => true);
+		_expression = expression ?? new TestExpression((ref _) => true);
 	}
 
 	public override void Execute()
@@ -44,8 +44,8 @@ public class OutlineWall : WECommand
 		{
 			for (int tileY = y; tileY <= y2; tileY++)
 			{
-				ITile tile = Main.tile[tileX, tileY];
-				if (tile.wall == 0 || !_expression.Evaluate(tile) || !magicWand.InSelection(tileX, tileY))
+				ref var tile = ref Main.tile[tileX, tileY];
+				if (tile.wall == 0 || !_expression.Evaluate(ref tile) || !magicWand.InSelection(tileX, tileY))
 				{
 					continue;
 				}
@@ -65,7 +65,7 @@ public class OutlineWall : WECommand
 
 		foreach (Point position in outlinePositions)
 		{
-			ITile tile = Main.tile[position.X, position.Y];
+			ref var tile = ref Main.tile[position.X, position.Y];
 			tile.wallColor((byte)_color);
 			tile.wall = (ushort)_wallType;
 		}

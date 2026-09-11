@@ -286,10 +286,10 @@ public partial class Plugin
     {
         var velocity = new Vector2(0, 0);
         // var pos = new Vector2(hook.position.X, hook.position.Y + 3);
-        var index = SpawnProjectile.NewProjectile(
+        var index = Projectile.NewProjectile(
             hook.GetProjectileSource_FromThis(),
             pos, velocity, hook.type, 0, 0,
-            player.Index, 0, 0, 0, -1, uuid);
+            player.Index, 0, 0, 0);
         player.SendData(PacketTypes.ProjectileNew, "", index);
     }
 

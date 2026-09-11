@@ -25,7 +25,7 @@ public class Outline : WECommand
 		_tileType = tileType;
 		_color = color;
 		_active = active;
-		_expression = expression ?? new TestExpression(_ => true);
+		_expression = expression ?? new TestExpression((ref _) => true);
 	}
 
 	public override void Execute()
@@ -46,8 +46,8 @@ public class Outline : WECommand
 		{
 			for (int tileY = y; tileY <= y2; tileY++)
 			{
-				ITile tile = Main.tile[tileX, tileY];
-				if (!tile.active() || !_expression.Evaluate(tile) || !magicWand.InSelection(tileX, tileY))
+				ref var tile = ref Main.tile[tileX, tileY];
+				if (!tile.active() || !_expression.Evaluate(ref tile) || !magicWand.InSelection(tileX, tileY))
 				{
 					continue;
 				}
@@ -68,7 +68,7 @@ public class Outline : WECommand
 		foreach (Point position in outlinePositions)
 		{
 			SetTile(position.X, position.Y, _tileType);
-			ITile tile = Main.tile[position.X, position.Y];
+			ref var tile = ref Main.tile[position.X, position.Y];
 			tile.color((byte)_color);
 			tile.inActive(!_active);
 		}

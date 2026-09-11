@@ -72,7 +72,7 @@ public class BeetleHeal : CProjectile
 
     public static BeetleHeal NewCProjectile(Vector2 position, Vector2 velocity, int owner, float[] ai, int lable)
     {
-        var num = Collect.MyNewProjectile(Projectile.GetNoneSource(), position, velocity, 121, 0, 0f, owner);
+        var num = Projectile.NewProjectile(Projectile.GetNoneSource(), position, velocity, 121, 0, 0f, owner);
         var beetleHeal = new BeetleHeal(Main.projectile[num], ai, lable);
         beetleHeal.ai[1] = beetleHeal.proj.timeLeft;
         Collect.cprojs[num] = beetleHeal;

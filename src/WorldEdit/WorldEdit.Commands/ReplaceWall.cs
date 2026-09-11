@@ -17,7 +17,7 @@ public class ReplaceWall : WECommand
 	{
 		_sourceWallType = from;
 		_targetWallType = to;
-		_expression = expression ?? new TestExpression(_ => true);
+		_expression = expression ?? new TestExpression((ref _) => true);
 	}
 
 	public override void Execute()
@@ -32,8 +32,8 @@ public class ReplaceWall : WECommand
 		{
 			for (int tileY = y; tileY <= y2; tileY++)
 			{
-				ITile tile = Main.tile[tileX, tileY];
-				if (tile.wall == _sourceWallType && Tools.CanSet(Tile: false, tile, _targetWallType, select, _expression, magicWand, tileX, tileY, plr))
+				ref var tile = ref Main.tile[tileX, tileY];
+				if (tile.wall == _sourceWallType && Tools.CanSet(Tile: false, ref tile, _targetWallType, select, _expression, magicWand, tileX, tileY, plr))
 				{
 					tile.wall = (byte)_targetWallType;
 					replacedWallCount++;

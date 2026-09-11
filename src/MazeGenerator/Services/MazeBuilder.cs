@@ -421,7 +421,7 @@ public class MazeBuilder : IDisposable
             
                 if (tileX >= 0 && tileX < Main.maxTilesX && tileY >= 0 && tileY < Main.maxTilesY)
                 {
-                    Main.tile[tileX, tileY] = new Tile();
+                    Main.tile[tileX, tileY] = new TileData();
                 
                     Main.tile[tileX, tileY].active(true);
                     Main.tile[tileX, tileY].type = TileID.Spikes; 
@@ -980,7 +980,7 @@ public class MazeBuilder : IDisposable
 
                     if (tileX >= 0 && tileX < Main.maxTilesX && tileY >= 0 && tileY < Main.maxTilesY)
                     {
-                        Main.tile[tileX, tileY] = new Tile();
+                        Main.tile[tileX, tileY] = new TileData();
                     }
                 }
             }

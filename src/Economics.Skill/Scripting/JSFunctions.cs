@@ -23,7 +23,7 @@ public class JSFunctions
     [ScriptFunction("SpawnProjtile")]
     public static int JSProj(TSPlayer ply, Vector2 pos, Vector2 vel, int type, int Damage, int KnockBack, int Owner, float ai0 = 0, float ai1 = 0, float ai2 = 0, int timeLeft = -1, string uuid = "")
     {
-        return SpawnProjectile.NewProjectile(
+        return Projectile.NewProjectile(
             ply.TPlayer.GetProjectileSource_Item(ply.TPlayer.HeldItem),
             pos,
             vel,
@@ -33,9 +33,7 @@ public class JSFunctions
             Owner,
             ai0,
             ai1,
-            ai2,
-            timeLeft,
-            uuid);
+            ai2);
     }
 
     [ScriptFunction("SendProjectilePacket")]

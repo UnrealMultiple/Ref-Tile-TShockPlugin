@@ -294,7 +294,7 @@ public class GameUitls
 
     public static void DropItem(TSPlayer player, Item item)
     {
-        int num = Item.NewItem(new EntitySource_DebugCommand(), (int)player.X, (int)player.Y, player.TPlayer.width, player.TPlayer.height, item.type, item.stack, noBroadcast: true, item.prefix, noGrabDelay: true);
+        int num = Item.NewItem(new EntitySource_DebugCommand(), (int)player.X, (int)player.Y, player.TPlayer.width, player.TPlayer.height, item.type, item.stack, noBroadcast: true, item.prefix);
         TSPlayer.All.SendData(PacketTypes.ItemDrop, "", num, 1f);
     }
 }

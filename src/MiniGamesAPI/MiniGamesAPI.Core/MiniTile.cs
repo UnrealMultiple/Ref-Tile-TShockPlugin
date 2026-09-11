@@ -13,18 +13,18 @@ public class MiniTile
 
     public int Type => this.Tile.type;
 
-    public ITile Tile { get; set; }
+    public TileData Tile { get; set; }
 
-    public MiniTile(int x, int y, ITile tile)
+    public MiniTile(int x, int y, TileData tile)
     {
         this.X = x;
         this.Y = y;
-        this.Tile = new Tile(tile);
+        this.Tile = new TileData(tile);
     }
 
     public void Place()
     {
-        Main.tile[this.X, this.Y] = new Tile(this.Tile);
+        Main.tile[this.X, this.Y] = new TileData(this.Tile);
     }
 
     public void Kill(bool fail = false, bool effectOnly = false, bool noitem = false)

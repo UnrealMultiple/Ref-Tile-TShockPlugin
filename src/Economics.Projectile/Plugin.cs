@@ -129,7 +129,7 @@ public class Plugin : TerrariaPlugin
                         var guid = Guid.NewGuid().ToString();
                         var npc = Main.npc[attackTarget];
                         var speed = self.DirectionTo(npc.Center).SafeNormalize(-Vector2.UnitY) * self.velocity.Length();
-                        var index = Core.Utils.SpawnProjectile.NewProjectile(Terraria.Projectile.GetNoneSource(), self.Center, speed.ToLenOf(proj.Speed), proj.ID, (int) damage, knockback, self.owner, proj.AI[0], proj.AI[1], proj.AI[2], proj.TimeLeft, guid);
+                        var index = Terraria.Projectile.NewProjectile(Terraria.Projectile.GetNoneSource(), self.Center, speed.ToLenOf(proj.Speed), proj.ID, (int) damage, knockback, self.owner, proj.AI[0], proj.AI[1], proj.AI[2]);
                         TSPlayer.All.SendData(PacketTypes.ProjectileNew, "", index);
                         if (proj.AutoFollow)
                         {
@@ -197,7 +197,7 @@ public class Plugin : TerrariaPlugin
                     //速度
                     var speed = e.Player.TPlayer.ItemOffSet().ToLenOf(proj.Speed);
                     var guid = Guid.NewGuid().ToString();
-                    var index = Core.Utils.SpawnProjectile.NewProjectile(e.Player.TPlayer.GetItemSource_OpenItem(e.Player.SelectedItem.type), e.Player.TPlayer.position, speed, proj.ID, (int) damage, knockback, e.PlayerId, proj.AI[0], proj.AI[1], proj.AI[2], proj.TimeLeft, guid);
+                    var index = Terraria.Projectile.NewProjectile(e.Player.TPlayer.GetItemSource_OpenItem(e.Player.SelectedItem.type), e.Player.TPlayer.position, speed, proj.ID, (int) damage, knockback, e.PlayerId, proj.AI[0], proj.AI[1], proj.AI[2]);
                     TSPlayer.All.SendData(PacketTypes.ProjectileNew, null, index);
                     this.useCD[e.Player.Index] += e.Player.SelectedItem.useTime;
                     if (proj.AutoFollow)
@@ -235,7 +235,7 @@ public class Plugin : TerrariaPlugin
                             //速度
                             var speed = proj.Speed > 0f ? e.Velocity.ToLenOf(proj.Speed) : e.Velocity;
                             var guid = Guid.NewGuid().ToString();
-                            var index = Core.Utils.SpawnProjectile.NewProjectile(Main.projectile[e.Index].GetProjectileSource_FromThis(), e.Position, speed, proj.ID, (int) damage, knockback, e.Owner, proj.AI[0], proj.AI[1], proj.AI[2], proj.TimeLeft, guid);
+                            var index = Terraria.Projectile.NewProjectile(Main.projectile[e.Index].GetProjectileSource_FromThis(), e.Position, speed, proj.ID, (int) damage, knockback, e.Owner, proj.AI[0], proj.AI[1], proj.AI[2]);
                             e.Player.SendData(PacketTypes.ProjectileNew, "", index);
                             if (proj.AutoFollow)
                             {
@@ -269,7 +269,7 @@ public class Plugin : TerrariaPlugin
 
                                 var guid = Guid.NewGuid().ToString();
 
-                                var index = Core.Utils.SpawnProjectile.NewProjectile(e.Player.TPlayer.GetItemSource_OpenItem(e.Player.SelectedItem.type), e.Position, speed, proj.ID, (int) damage, knockback, e.Owner, proj.AI[0], proj.AI[1], proj.AI[2], proj.TimeLeft, guid);
+                                var index = Terraria.Projectile.NewProjectile(e.Player.TPlayer.GetItemSource_OpenItem(e.Player.SelectedItem.type), e.Position, speed, proj.ID, (int) damage, knockback, e.Owner, proj.AI[0], proj.AI[1], proj.AI[2]);
 
                                 e.Player.SendData(PacketTypes.ProjectileNew, "", index);
 

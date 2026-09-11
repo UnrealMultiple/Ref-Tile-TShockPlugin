@@ -7,7 +7,7 @@ namespace RegionView;
 
 public class Region
 {
-    private Tile[]? RealTiles;
+    private TileData[]? RealTiles;
     public const int MaximumSize = 256;
 
     public Rectangle Area;
@@ -112,8 +112,8 @@ public class Region
 
         // Initialise the temporary tile array.
         this.RealTiles = this.ShowArea.Width == 0
-            ? (new Tile[this.ShowArea.Height + 1])
-            : this.ShowArea.Height == 0 ? (new Tile[this.ShowArea.Width + 1]) : (new Tile[(this.ShowArea.Width + this.ShowArea.Height) * 2]);
+            ? (new TileData[this.ShowArea.Height + 1])
+            : this.ShowArea.Height == 0 ? (new TileData[this.ShowArea.Width + 1]) : (new TileData[(this.ShowArea.Width + this.ShowArea.Height) * 2]);
 
         // Top boundary
         if (this.ShowArea.Top == this.Area.Top)
@@ -212,20 +212,20 @@ public class Region
             throw new InvalidOperationException(GetString("区域尚未设置虚拟图块。"));
         }
 
-        ITile fakeTile;
-        if (Main.tile[x, y] == null)
+        TileData fakeTile = TileData.EMPTY;
+        if (Main.tile[x, y].IsNull)
         {
-            fakeTile = new Tile();
+            fakeTile = new TileData();
         }
         else
         {
             // As of API version 1.22, Main.tile.get now only returns a link to the tile data heap, and the tile was getting lost at Main.tile[x, y] = fakeTile.
             // This is why we actually have to copy the tile now.
-            this.RealTiles[index] = new Tile(Main.tile[x, y]);
+            this.RealTiles[index] = new TileData(Main.tile[x, y]);
             fakeTile = Main.tile[x, y];
         }
 
-        if (this.RealTiles[index] != null && this.RealTiles[index].active())
+        if (this.RealTiles[index].IsNotNull && this.RealTiles[index].active())
         {
             // There's already a tile there; apply paint.
             if (fakeTile.type == Terraria.ID.TileID.RainbowBrick)

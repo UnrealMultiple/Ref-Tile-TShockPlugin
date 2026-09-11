@@ -186,7 +186,7 @@ public class Challenger : TerrariaPlugin
             var armor = Main.player[e.Player.Index].armor;
             if (armor[0].type == 256 && armor[1].type == 257 && armor[2].type == 258 && Main.rand.Next(any) == 0)
             {
-                var index = Collect.MyNewProjectile(null, Main.player[e.Player.Index].Center, -Vector2.UnitY, any2, any3, any4, e.Player.Index);
+                var index = Projectile.NewProjectile(null, Main.player[e.Player.Index].Center, -Vector2.UnitY, any2, any3, any4, e.Player.Index);
                 CProjectile.Update(index);
                 NetMessage.SendData(62, -1, -1, null, e.Player.Index, 1f, 0f, 0f, 0, 0, 0);
                 NetMessage.SendData(16, -1, -1, NetworkText.Empty, e.Player.Index, 0f, 0f, 0f, 0, 0, 0);
@@ -270,7 +270,7 @@ public class Challenger : TerrariaPlugin
             var num = Main.rand.Next(2, 6);
             for (var i = 0; i < num; i++)
             {
-                var num2 = Collect.MyNewProjectile(null, args.Player.Center, new Vector2((float) Math.Cos(Main.rand.NextDouble() * 6.2831854820251465), (float) Math.Sin(Main.rand.NextDouble() * 6.2831854820251465)), any, any2, any3, args.Player.whoAmI);
+                var num2 = Projectile.NewProjectile(null, args.Player.Center, new Vector2((float) Math.Cos(Main.rand.NextDouble() * 6.2831854820251465), (float) Math.Sin(Main.rand.NextDouble() * 6.2831854820251465)), any, any2, any3, args.Player.whoAmI);
                 var obj = Main.projectile[num2];
                 obj.scale *= 0.5f;
                 CProjectile.Update(num2);
@@ -311,7 +311,7 @@ public class Challenger : TerrariaPlugin
                 var armor2 = player.armor;
                 if (armor2[0].type == 123 && armor2[1].type == 124 && armor2[2].type == 125 && Timer % any4 == 0)
                 {
-                    var index = Collect.MyNewProjectile(null, player.Center + new Vector2(Main.rand.Next(-860, 861), -600f), Terraria.Utils.RotateRandom(Vector2.UnitY, 0.3) * any3, any, any2, 0f, player.whoAmI);
+                    var index = Projectile.NewProjectile(null, player.Center + new Vector2(Main.rand.Next(-860, 861), -600f), Terraria.Utils.RotateRandom(Vector2.UnitY, 0.3) * any3, any, any2, 0f, player.whoAmI);
                     CProjectile.Update(index);
                 }
             }
@@ -332,7 +332,7 @@ public class Challenger : TerrariaPlugin
             var armor = player.armor;
             if ((armor[0].type == 228 || armor[0].type == 960) && (armor[1].type == 229 || armor[1].type == 961) && (armor[2].type == 230 || armor[2].type == 962) && Main.rand.Next(15) == 0 && Timer % any6 == 0)
             {
-                var index = Collect.MyNewProjectile(player.GetProjectileSource_Accessory(armor[0]), player.Center, Terraria.Utils.RotatedByRandom(Vector2.One, 6.2831854820251465) * any, Main.rand.Next(any2, any3), any4, any5, player.whoAmI);
+                var index = Projectile.NewProjectile(player.GetProjectileSource_Accessory(armor[0]), player.Center, Terraria.Utils.RotatedByRandom(Vector2.One, 6.2831854820251465) * any, Main.rand.Next(any2, any3), any4, any5, player.whoAmI);
                 CProjectile.Update(index);
             }
         }
@@ -382,7 +382,7 @@ public class Challenger : TerrariaPlugin
                     for (var i = 0; i < 8; i++)
                     {
                         var velocity = Terraria.Utils.RotatedBy(Vector2.UnitY, (double) (((float) Math.PI / 4f * i) + ((float) Math.PI / 8f)), default) * 4f;
-                        var index = Collect.MyNewProjectile(null, Main.player[e.Player.Index].Center, velocity, any, any2, any3, e.Player.Index);
+                        var index = Projectile.NewProjectile(null, Main.player[e.Player.Index].Center, velocity, any, any2, any3, e.Player.Index);
                         CProjectile.Update(index);
                     }
                 }
@@ -393,7 +393,7 @@ public class Challenger : TerrariaPlugin
                 if ((armor2[0].type == 151 || armor2[0].type == 959) && armor2[1].type == 152 && armor2[2].type == 153 && Main.rand.Next(3) == 0 && Timer % time2 == 0)
                 {
                     var val = args.Player.Center + (Terraria.Utils.RotatedByRandom(Vector2.One, 3.1415927410125732) * 0.1f * Main.rand.Next(0, 500));
-                    var index2 = Collect.MyNewProjectile(null, val, (args.Npc.Center + new Vector2(0f, -10f) - val) * 0.02f, any4, any5, any6, args.Player.whoAmI);
+                    var index2 = Projectile.NewProjectile(null, val, (args.Npc.Center + new Vector2(0f, -10f) - val) * 0.02f, any4, any5, any6, args.Player.whoAmI);
                     CProjectile.Update(index2);
                 }
             }
@@ -667,7 +667,7 @@ public class Challenger : TerrariaPlugin
                 for (var i = 0; i < 20; i++)
                 {
                     var velocity = Terraria.Utils.RotatedBy(Vector2.UnitY, (double) (((float) Math.PI / 10f * i) + ((float) Math.PI / 20f)), default) * ((num == 94) ? 4 : 5);
-                    var index = Collect.MyNewProjectile(Main.player[num2].GetProjectileSource_Item(armor[0]), center, velocity, num, (num == 94) ? 70 : 40, 5f, num2);
+                    var index = Projectile.NewProjectile(Main.player[num2].GetProjectileSource_Item(armor[0]), center, velocity, num, (num == 94) ? 70 : 40, 5f, num2);
                     CProjectile.Update(index);
                 }
             }
@@ -688,7 +688,7 @@ public class Challenger : TerrariaPlugin
             {
                 var val = NearestHostileNPC(player.Center, 1000000f);
                 var postion = player.Center + (Terraria.Utils.RotatedByRandom(Vector2.UnitX, 6.2831854820251465) * Main.rand.Next(any4));
-                var index = (val == null) ? Collect.MyNewProjectile(null, postion, Vector2.Zero, any, any2, 0f, player.whoAmI, -2f) : Collect.MyNewProjectile(null, postion, Vector2.Zero, any, any2, 0f, player.whoAmI, val.whoAmI);
+                var index = (val == null) ? Projectile.NewProjectile(null, postion, Vector2.Zero, any, any2, 0f, player.whoAmI, -2f) : Projectile.NewProjectile(null, postion, Vector2.Zero, any, any2, 0f, player.whoAmI, val.whoAmI);
                 CProjectile.Update(index);
             }
         }
@@ -707,7 +707,7 @@ public class Challenger : TerrariaPlugin
             if (armor[0].type == 684 && armor[1].type == 685 && armor[2].type == 686 && Timer % any4 == 0)
             {
                 var postion = player.Center + new Vector2(Main.rand.Next(-860, 861), -600f);
-                var index = Collect.MyNewProjectile(null, postion, Vector2.UnitY, any, any2, any3, player.whoAmI, 0f, Main.rand.Next(3));
+                var index = Projectile.NewProjectile(null, postion, Vector2.UnitY, any, any2, any3, player.whoAmI, 0f, Main.rand.Next(3));
                 CProjectile.Update(index);
             }
         }
@@ -733,7 +733,7 @@ public class Challenger : TerrariaPlugin
                 var num = Main.rand.NextDouble();
                 var val = args.Npc.Center + (new Vector2((float) Math.Cos(num * 6.2831854820251465), (float) Math.Sin(num * 6.2831854820251465)) * 300f);
                 var velocity = Terraria.Utils.SafeNormalize(args.Npc.Center - val, Vector2.Zero) * 20f;
-                var index = Collect.MyNewProjectile(null, val, velocity, any2, damage, 1.14514f, args.Player.whoAmI);
+                var index = Projectile.NewProjectile(null, val, velocity, any2, damage, 1.14514f, args.Player.whoAmI);
                 CProjectile.Update(index);
             }
             else
@@ -742,7 +742,7 @@ public class Challenger : TerrariaPlugin
                 var num2 = Main.rand.NextDouble();
                 var val2 = args.Npc.Center + (new Vector2((float) Math.Cos(num2 * 6.2831854820251465), (float) Math.Sin(num2 * 6.2831854820251465)) * 300f);
                 var velocity2 = Terraria.Utils.SafeNormalize(args.Npc.Center - val2, Vector2.Zero) * 18f;
-                var index2 = Collect.MyNewProjectile(null, val2, velocity2, any3, damage, 1.14514f, args.Player.whoAmI);
+                var index2 = Projectile.NewProjectile(null, val2, velocity2, any3, damage, 1.14514f, args.Player.whoAmI);
                 CProjectile.Update(index2);
             }
         }
@@ -797,7 +797,7 @@ public class Challenger : TerrariaPlugin
                 {
                     val.Y *= 0.5f;
                 }
-                var index = Collect.MyNewProjectile(Projectile.GetNoneSource(), player.Center, val, Any2, Any3, 5f, player.whoAmI);
+                var index = Projectile.NewProjectile(Projectile.GetNoneSource(), player.Center, val, Any2, Any3, 5f, player.whoAmI);
                 CProjectile.Update(index);
             }
         }
@@ -854,7 +854,7 @@ public class Challenger : TerrariaPlugin
                 var list = new List<Vector2>();
                 Projectile.FillWhipControlPoints(args.Projectile, list);
                 var val2 = list[^2];
-                var index = Collect.MyNewProjectile(null, val2, (val2 - val.Center) * 0.004f, Any2, (int) (args.Projectile.damage * Any3), 0f, val.whoAmI);
+                var index = Projectile.NewProjectile(null, val2, (val2 - val.Center) * 0.004f, Any2, (int) (args.Projectile.damage * Any3), 0f, val.whoAmI);
                 CProjectile.Update(index);
             }
             return;
@@ -949,7 +949,7 @@ public class Challenger : TerrariaPlugin
             var num2 = Main.rand.NextDouble();
             var val = args.Npc.Center + (new Vector2((float) Math.Cos(num2 * 6.2831854820251465), (float) Math.Sin(num2 * 6.2831854820251465)) * 250f);
             var velocity = Terraria.Utils.SafeNormalize(args.Npc.Center - val, Vector2.Zero) * 20f;
-            var index = Collect.MyNewProjectile(Projectile.GetNoneSource(), val, velocity, any4, flag3 ? ((int) (args.Damage * any2)) : ((int) (args.Damage * 0.45f)), 20.114f, args.Player.whoAmI);
+            var index = Projectile.NewProjectile(Projectile.GetNoneSource(), val, velocity, any4, flag3 ? ((int) (args.Damage * any2)) : ((int) (args.Damage * 0.45f)), 20.114f, args.Player.whoAmI);
             CProjectile.Update(index);
         }
     }
@@ -989,7 +989,7 @@ public class Challenger : TerrariaPlugin
                             var num2 = (double) ((float) Math.PI * 2f / num * i) + (Main.time % 3.0);
                             val = default;
                             var velocity = Terraria.Utils.RotatedBy(unitY, num2, val) * 20f;
-                            var index = Collect.MyNewProjectile(Projectile.GetNoneSource(), projectile.Center, velocity, any, (int) (projectile.damage * any2), any3, projectile.owner);
+                            var index = Projectile.NewProjectile(Projectile.GetNoneSource(), projectile.Center, velocity, any, (int) (projectile.damage * any2), any3, projectile.owner);
                             CProjectile.Update(index);
                         }
                     }
@@ -1011,7 +1011,7 @@ public class Challenger : TerrariaPlugin
                             var num4 = (double) ((float) Math.PI * 2f / num3 * j) + (Main.time % 3.14);
                             val = default;
                             var val2 = Terraria.Utils.RotatedBy(unitY2, num4, val) * 70f;
-                            var index2 = Collect.MyNewProjectile(null, args.Npc.Center + val2, Vector2.Zero, any, (int) (args.Damage * any2), any3, args.Player.whoAmI);
+                            var index2 = Projectile.NewProjectile(null, args.Npc.Center + val2, Vector2.Zero, any, (int) (args.Damage * any2), any3, args.Player.whoAmI);
                             CProjectile.Update(index2);
                         }
                     }
@@ -1136,7 +1136,7 @@ public class Challenger : TerrariaPlugin
                 var list = new List<Vector2>();
                 Projectile.FillWhipControlPoints(args.Projectile, list);
                 var val2 = list[^2];
-                var index = Collect.MyNewProjectile(null, val2, (val2 - val.Center) * 0.008f, type, (int) (args.Projectile.damage * any3), 0f, val.whoAmI);
+                var index = Projectile.NewProjectile(null, val2, (val2 - val.Center) * 0.008f, type, (int) (args.Projectile.damage * any3), 0f, val.whoAmI);
                 CProjectile.Update(index);
             }
         }
@@ -1166,7 +1166,7 @@ public class Challenger : TerrariaPlugin
 
                 if (Timer % config.RoyalGel_Timer == 0)
                 {
-                    var num = Item.NewItem(null, player.Center + new Vector2(Main.rand.Next(-860, 861), -600f), new Vector2(36f, 36f), list, 1, false, 0, false);
+                    var num = Item.NewItem(null, player.Center + new Vector2(Main.rand.Next(-860, 861), -600f), list, 1);
                     Main.item[num].color = new Color(Main.rand.Next(256), Main.rand.Next(256), Main.rand.Next(256));
                     TSPlayer.All.SendData((PacketTypes) 88, null, num, 1f, 0f, 0f, 0);
                 }
@@ -1228,7 +1228,7 @@ public class Challenger : TerrariaPlugin
         var itemId = config.VolatileGelatin[randomIndex];
 
         // 创建掉落物，使用随机选中的itemId
-        Item.NewItem(null, args.Npc.Center, new Vector2(20f, 20f), itemId);
+        Item.NewItem(null, args.Npc.Center, itemId);
     }
 
 

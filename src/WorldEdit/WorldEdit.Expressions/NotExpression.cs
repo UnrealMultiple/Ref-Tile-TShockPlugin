@@ -9,8 +9,8 @@ public class NotExpression : Expression
 		Left = expression;
 	}
 
-	public override bool Evaluate(ITile tile)
+	public override bool Evaluate(ref TileData tile)
 	{
-		return !Left.Evaluate(tile);
+		return !Left.Evaluate(ref tile);
 	}
 }

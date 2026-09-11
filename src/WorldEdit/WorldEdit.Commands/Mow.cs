@@ -29,7 +29,7 @@ public class Mow : WECommand
 		{
 			for (int j = y; j <= y2; j++)
 			{
-				ITile val = Main.tile[i, j];
+				ref var val = ref Main.tile[i, j];
 				if (mowedTiles.Contains(val.type))
 				{
 					val.active(false);

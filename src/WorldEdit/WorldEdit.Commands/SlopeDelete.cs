@@ -14,7 +14,7 @@ internal class SlopeDelete : WECommand
 		: base(x, y, x2, y2, magicWand, plr)
 	{
 		this.slope = (byte)slope;
-		this.expression = expression ?? new TestExpression((ITile t) => true);
+		this.expression = expression ?? new TestExpression((ref _) => true);
 	}
 
 	public override void Execute()
@@ -31,8 +31,8 @@ internal class SlopeDelete : WECommand
 			{
 				for (int j = y; j <= y2; j++)
 				{
-					ITile val = Main.tile[i, j];
-					if (val.active() && select(i, j, plr) && expression.Evaluate(val) && magicWand.InSelection(i, j))
+					ref var val = ref Main.tile[i, j];
+					if (val.active() && select(i, j, plr) && expression.Evaluate(ref val) && magicWand.InSelection(i, j))
 					{
 						val.slope((byte)0);
 						val.halfBrick(false);
@@ -47,8 +47,8 @@ internal class SlopeDelete : WECommand
 			{
 				for (int l = y; l <= y2; l++)
 				{
-					ITile tile = Main.tile[k, l];
-					if (tile.active() && select(k, l, plr) && expression.Evaluate(tile) && tile.slope() == 0 && tile.halfBrick())
+					ref var tile = ref Main.tile[k, l];
+					if (tile.active() && select(k, l, plr) && expression.Evaluate(ref tile) && tile.slope() == 0 && tile.halfBrick())
 					{
 						tile.slope((byte)0);
 						tile.halfBrick(false);
@@ -67,8 +67,8 @@ internal class SlopeDelete : WECommand
 			{
 				for (int n = y; n <= y2; n++)
 				{
-					ITile tile = Main.tile[m, n];
-					if (tile.active() && select(m, n, plr) && expression.Evaluate(tile) && tile.slope() == slope)
+					ref var tile = ref Main.tile[m, n];
+					if (tile.active() && select(m, n, plr) && expression.Evaluate(ref tile) && tile.slope() == slope)
 					{
 						tile.slope((byte)0);
 						removedSlopeCount++;

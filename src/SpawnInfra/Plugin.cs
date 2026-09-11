@@ -941,8 +941,8 @@ public class Plugin : TerrariaPlugin
         {
             for (var y = 0; y < Main.maxTilesY; y++)
             {
-                var tile = Main.tile[x, y];
-                if (tile is null || skipTile[x, y])
+                ref var tile = ref Main.tile[x, y];
+                if (tile.IsNull || skipTile[x, y])
                 {
                     continue;
                 }
@@ -1039,7 +1039,7 @@ public class Plugin : TerrariaPlugin
         {
             for (var y = 0; y < Main.maxTilesY; y++)
             {
-                if (Main.tile[x, y]?.shimmer() == true && !skipTile[x, y])
+                if (Main.tile[x, y].shimmer() == true && !skipTile[x, y])
                 {
                     // 发现新的微光湖，开始标记
                     var label = ConedLakes.Count + 1;

@@ -101,7 +101,7 @@ public abstract class WECommand
 
 	public void SetTile(int i, int j, int tileType)
 	{
-		ITile val = Main.tile[i, j];
+		ref var val = ref Main.tile[i, j];
 		switch (tileType)
 		{
 		case -1:

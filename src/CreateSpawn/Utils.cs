@@ -111,7 +111,7 @@ internal static class Utils
         var width = maxX - minX + 1;
         var height = maxY - minY + 1;
 
-        var tiles = new Tile[width, height];
+        var tiles = new TileData[width, height];
 
         var chestItems = new List<ChestItems>(); // 定义箱子物品及其位置
         var signText = new List<Sign>(); // 用于存储标牌数据
@@ -129,7 +129,7 @@ internal static class Utils
                 var indexY = y - minY;
 
                 //复制图格
-                tiles[indexX, indexY] = (Tile) Main.tile[x, y].Clone();
+                tiles[indexX, indexY] = (TileData) Main.tile[x, y].Clone();
 
                 GetChestItems(chestItems, x, y); //获取箱子物品
                 GetSign(signText, x, y); //获取标牌、广播盒、墓碑上等可阅读家具的信息
@@ -190,7 +190,7 @@ internal static class Utils
         for (var slot = 0; slot < 40; slot++)
         {
             var item = chest.item[slot];
-            if (item?.active == true)
+            if (!item.IsAir)
             {
                 // 克隆物品并记录其原来所在箱子的位置
                 chestItems.Add(new ChestItems
@@ -251,7 +251,7 @@ internal static class Utils
 
     public static void GetSign(List<Sign> signs, int x, int y)
     {
-        if (Main.tile[x, y]?.active() == true && Main.tileSign[Main.tile[x, y].type])
+        if (Main.tile[x, y].active() == true && Main.tileSign[Main.tile[x, y].type])
         {
             // 获取 Sign ID
             var signId = Sign.ReadSign(x, y);
@@ -932,7 +932,7 @@ internal static class Utils
                     }
 
                     // 完全复制图格数据
-                    Main.tile[worldX, worldY] = (Tile) clip.Tiles![x, y].Clone();
+                    Main.tile[worldX, worldY] = (TileData) clip.Tiles![x, y].Clone();
                 }
             }
 

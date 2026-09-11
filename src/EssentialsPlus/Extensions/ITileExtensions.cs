@@ -8,8 +8,8 @@ public static class ITileExtensions
     /// Determines whether a tile is empty.
     /// </summary>
     /// <returns></returns>
-    public static bool IsEmpty(this ITile tile)
+    public static bool IsEmpty(this TileData tile)
     {
-        return tile == null || ((!tile.active() || !Main.tileSolid[tile.type]) && tile.liquid == 0);
+        return tile.IsNull || ((!tile.active() || !Main.tileSolid[tile.type]) && tile.liquid == 0);
     }
 }

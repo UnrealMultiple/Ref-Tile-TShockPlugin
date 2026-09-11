@@ -14,7 +14,7 @@ public class Slope : WECommand
 		: base(x, y, x2, y2, magicWand, plr)
 	{
 		_slope = (byte)slope;
-		_expression = expression ?? new TestExpression(_ => true);
+		_expression = expression ?? new TestExpression((ref _) => true);
 	}
 
 	public override void Execute()
@@ -31,8 +31,8 @@ public class Slope : WECommand
 			{
 				for (int tileY = y; tileY <= y2; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
-					if (tile.active() && select(tileX, tileY, plr) && _expression.Evaluate(tile) && magicWand.InSelection(tileX, tileY))
+					ref var tile = ref Main.tile[tileX, tileY];
+					if (tile.active() && select(tileX, tileY, plr) && _expression.Evaluate(ref tile) && magicWand.InSelection(tileX, tileY))
 					{
 						tile.halfBrick(true);
 						changedTileCount++;
@@ -50,8 +50,8 @@ public class Slope : WECommand
 			{
 				for (int tileY = y; tileY <= y2; tileY++)
 				{
-					ITile tile = Main.tile[tileX, tileY];
-					if (tile.active() && select(tileX, tileY, plr) && _expression.Evaluate(tile))
+					ref var tile = ref Main.tile[tileX, tileY];
+					if (tile.active() && select(tileX, tileY, plr) && _expression.Evaluate(ref tile))
 					{
 						if (tile.halfBrick())
 						{

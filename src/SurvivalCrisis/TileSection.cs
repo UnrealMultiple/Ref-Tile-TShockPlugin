@@ -43,26 +43,18 @@ namespace SurvivalCrisis
 
 		public int Size => Width * Height;
 
-		public ITile this[int x, int y]
+		public ref TileData this[int x, int y]
 		{
-			get
-			{
+            get
+            {
 #if DEBUG
-				System.Diagnostics.Debug.Assert(0 <= x && x < Width,  "x out of range");
-				System.Diagnostics.Debug.Assert(0 <= y && y < Height, "y out of range");
+                System.Diagnostics.Debug.Assert(0 <= x && x < Width, "x out of range");
+                System.Diagnostics.Debug.Assert(0 <= y && y < Height, "y out of range");
 #endif
-				return Main.tile[X + x, Y + y];
-			}
-			set
-			{
-#if DEBUG
-				System.Diagnostics.Debug.Assert(0 <= x && x < Width,  "x out of range");
-				System.Diagnostics.Debug.Assert(0 <= y && y < Height, "y out of range");
-#endif
-				Main.tile[X + x, Y + y] = value;
-			}
+                return ref Main.tile[X + x, Y + y];
+            }
 		}
-		public ITile this[Point point]
+		public TileData this[Point point]
 		{
 			get => this[point.X, point.Y];
 			set => this[point.X, point.Y] = value;

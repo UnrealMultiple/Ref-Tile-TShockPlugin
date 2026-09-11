@@ -181,37 +181,37 @@ public static class Parser
 		case "honey":
 		{
 			Test test;
-			return test = (ITile t) => t.liquid > 0 && t.liquidType() == 2;
+			return test = (ref TileData t) => t.liquid > 0 && t.liquidType() == 2;
 		}
 		case "nlh":
 		case "nhoney":
 		{
 			Test test;
-			return test = (ITile t) => t.liquidType() != 2;
+			return test = (ref TileData t) => t.liquidType() != 2;
 		}
 		case "ll":
 		case "lava":
 		{
 			Test test;
-			return test = (ITile t) => t.liquid > 0 && t.liquidType() == 1;
+			return test = (ref TileData t) => t.liquid > 0 && t.liquidType() == 1;
 		}
 		case "nll":
 		case "nlava":
 		{
 			Test test;
-			return test = (ITile t) => t.liquidType() != 1;
+			return test = (ref TileData t) => t.liquidType() != 1;
 		}
 		case "li":
 		case "liquid":
 		{
 			Test test;
-			return test = (ITile t) => t.liquid > 0;
+			return test = (ref TileData t) => t.liquid > 0;
 		}
 		case "nli":
 		case "nliquid":
 		{
 			Test test;
-			return test = (ITile t) => t.liquid == 0;
+			return test = (ref TileData t) => t.liquid == 0;
 		}
 		case "t":
 		case "tile":
@@ -219,20 +219,20 @@ public static class Parser
 			Test test;
 			if (string.IsNullOrEmpty(rhs))
 			{
-				return test = (ITile t) => t.active();
+				return test = (ref TileData t) => t.active();
 			}
 			List<int> tiles = Tools.GetTileID(rhs);
 			if (tiles.Count == 0 || tiles.Count > 1)
 			{
 				throw new ArgumentException();
 			}
-			return test = (ITile t) => (t.active() && t.type == tiles[0]) != negated;
+			return test = (ref TileData t) => (t.active() && t.type == tiles[0]) != negated;
 		}
 		case "nt":
 		case "ntile":
 		{
 			Test test;
-			return test = (ITile t) => !t.active();
+			return test = (ref TileData t) => !t.active();
 		}
 		case "tp":
 		case "tilepaint":
@@ -240,20 +240,20 @@ public static class Parser
 			Test test;
 			if (string.IsNullOrEmpty(rhs))
 			{
-				return test = (ITile t) => t.active() && t.color() != 0;
+				return test = (ref TileData t) => t.active() && t.color() != 0;
 			}
 			List<int> matchingColors = Tools.GetColorID(rhs);
 			if (matchingColors.Count == 0 || matchingColors.Count > 1)
 			{
 				throw new ArgumentException();
 			}
-			return test = (ITile t) => (t.active() && t.color() == matchingColors[0]) != negated;
+			return test = (ref TileData t) => (t.active() && t.color() == matchingColors[0]) != negated;
 		}
 		case "ntp":
 		case "ntilepaint":
 		{
 			Test test;
-			return test = (ITile t) => t.color() == 0;
+			return test = (ref TileData t) => t.color() == 0;
 		}
 		case "w":
 		case "wall":
@@ -261,20 +261,20 @@ public static class Parser
 			Test test;
 			if (string.IsNullOrEmpty(rhs))
 			{
-				return test = (ITile t) => t.wall != 0;
+				return test = (ref TileData t) => t.wall != 0;
 			}
 			List<int> walls = Tools.GetTileID(rhs);
 			if (walls.Count == 0 || walls.Count > 1)
 			{
 				throw new ArgumentException();
 			}
-			return test = (ITile t) => t.wall == walls[0] != negated;
+			return test = (ref TileData t) => t.wall == walls[0] != negated;
 		}
 		case "nw":
 		case "nwall":
 		{
 			Test test;
-			return test = (ITile t) => t.wall == 0;
+			return test = (ref TileData t) => t.wall == 0;
 		}
 		case "wp":
 		case "wallpaint":
@@ -282,32 +282,32 @@ public static class Parser
 			Test test;
 			if (string.IsNullOrEmpty(rhs))
 			{
-				return test = (ITile t) => t.wall > 0 && t.wallColor() != 0;
+				return test = (ref TileData t) => t.wall > 0 && t.wallColor() != 0;
 			}
 			List<int> colors = Tools.GetColorID(rhs);
 			if (colors.Count == 0 || colors.Count > 1)
 			{
 				throw new ArgumentException();
 			}
-			return test = (ITile t) => (t.wall > 0 && t.wallColor() == colors[0]) != negated;
+			return test = (ref TileData t) => (t.wall > 0 && t.wallColor() == colors[0]) != negated;
 		}
 		case "nwp":
 		case "nwallpaint":
 		{
 			Test test;
-			return test = (ITile t) => t.wallColor() == 0;
+			return test = (ref TileData t) => t.wallColor() == 0;
 		}
 		case "lw":
 		case "water":
 		{
 			Test test;
-			return test = (ITile t) => t.liquid > 0 && t.liquidType() == 0;
+			return test = (ref TileData t) => t.liquid > 0 && t.liquidType() == 0;
 		}
 		case "nlw":
 		case "nwater":
 		{
 			Test test;
-			return test = (ITile t) => t.liquidType() != 0;
+			return test = (ref TileData t) => t.liquidType() != 0;
 		}
 		case "wire":
 		case "wire1":
@@ -315,7 +315,7 @@ public static class Parser
 		case "redwire":
 		{
 			Test test;
-			return test = (ITile t) => t.wire();
+			return test = (ref TileData t) => t.wire();
 		}
 		case "nwire":
 		case "nwire1":
@@ -323,61 +323,61 @@ public static class Parser
 		case "nredwire":
 		{
 			Test test;
-			return test = (ITile t) => !t.wire();
+			return test = (ref TileData t) => !t.wire();
 		}
 		case "wire2":
 		case "wireblue":
 		case "bluewire":
 		{
 			Test test;
-			return test = (ITile t) => t.wire2();
+			return test = (ref TileData t) => t.wire2();
 		}
 		case "nwire2":
 		case "nwireblue":
 		case "nbluewire":
 		{
 			Test test;
-			return test = (ITile t) => !t.wire2();
+			return test = (ref TileData t) => !t.wire2();
 		}
 		case "wire3":
 		case "wiregreen":
 		case "greenwire":
 		{
 			Test test;
-			return test = (ITile t) => t.wire3();
+			return test = (ref TileData t) => t.wire3();
 		}
 		case "nwire3":
 		case "nwiregreen":
 		case "ngreenwire":
 		{
 			Test test;
-			return test = (ITile t) => !t.wire3();
+			return test = (ref TileData t) => !t.wire3();
 		}
 		case "wire4":
 		case "wireyellow":
 		case "yellowwire":
 		{
 			Test test;
-			return test = (ITile t) => t.wire4();
+			return test = (ref TileData t) => t.wire4();
 		}
 		case "nwire4":
 		case "nwireyellow":
 		case "nyellowwire":
 		{
 			Test test;
-			return test = (ITile t) => !t.wire4();
+			return test = (ref TileData t) => !t.wire4();
 		}
 		case "a":
 		case "active":
 		{
 			Test test;
-			return test = (ITile t) => t.active() && !t.inActive();
+			return test = (ref TileData t) => t.active() && !t.inActive();
 		}
 		case "na":
 		case "nactive":
 		{
 			Test test;
-			return test = (ITile t) => t.inActive();
+			return test = (ref TileData t) => t.inActive();
 		}
 		case "s":
 		case "slope":
@@ -385,32 +385,32 @@ public static class Parser
 			Test test;
 			if (string.IsNullOrEmpty(rhs))
 			{
-				return test = (ITile t) => t.slope() != 0 || t.halfBrick();
+				return test = (ref TileData t) => t.slope() != 0 || t.halfBrick();
 			}
 			int slope = Tools.GetSlopeID(rhs);
 			if (slope == -1)
 			{
 				throw new ArgumentException();
 			}
-			return test = (ITile t) => (t.active() && ((slope == 1) ? t.halfBrick() : (t.slope() == (byte)slope))) != negated;
+			return test = (ref TileData t) => (t.active() && ((slope == 1) ? t.halfBrick() : (t.slope() == (byte)slope))) != negated;
 		}
 		case "ns":
 		case "nslope":
 		{
 			Test test;
-			return test = (ITile t) => t.slope() == 0 && !t.halfBrick();
+			return test = (ref TileData t) => t.slope() == 0 && !t.halfBrick();
 		}
 		case "ac":
 		case "actuator":
 		{
 			Test test;
-			return test = (ITile t) => t.actuator();
+			return test = (ref TileData t) => t.actuator();
 		}
 		case "nac":
 		case "nactuator":
 		{
 			Test test;
-			return test = (ITile t) => !t.actuator();
+			return test = (ref TileData t) => !t.actuator();
 		}
 		default:
 			throw new ArgumentException(GetString("Invalid test."));

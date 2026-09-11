@@ -78,7 +78,7 @@ public class Biome
 		CaveWall3, CaveWall4, DirtWallUnsafe, DirtWallUnsafe1, DirtWallUnsafe2, DirtWallUnsafe3, DirtWallUnsafe4
 	};
 
-	public bool ConvertTile(ITile Tile, Biome ToBiome)
+	public bool ConvertTile(ref TileData Tile, Biome ToBiome)
 	{
 		if (Tile == null)
 		{
@@ -87,7 +87,8 @@ public class Biome
 		bool result = false;
 		if (Tile.active())
 		{
-			int sourceTileIndex = Array.FindIndex(Tiles, tileType => tileType == Tile.type);
+            var type = Tile.type;
+			int sourceTileIndex = Array.FindIndex(Tiles, tileType => tileType == type);
 			if (sourceTileIndex >= 0)
 			{
 				if (ToBiome.Tiles[sourceTileIndex] == -1)
@@ -106,7 +107,8 @@ public class Biome
 		}
 		if (Tile.wall > 0)
 		{
-			int sourceWallIndex = Array.FindIndex(Walls, wallType => wallType == Tile.wall);
+            var wall = Tile.wall;
+			int sourceWallIndex = Array.FindIndex(Walls, wallType => wallType == wall);
 			if (sourceWallIndex >= 0 && ToBiome.Walls[sourceWallIndex] != 0)
 			{
 				Tile.wall = ToBiome.Walls[sourceWallIndex];

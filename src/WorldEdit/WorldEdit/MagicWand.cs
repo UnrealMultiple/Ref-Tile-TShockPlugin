@@ -37,7 +37,7 @@ public class MagicWand
         {
             return false;
         }
-        if (!Expression.Evaluate(Main.tile[X, Y]))
+        if (!Expression.Evaluate(ref Main.tile[X, Y]))
         {
             return false;
         }
@@ -65,7 +65,7 @@ public class MagicWand
                 if (Tools.InMapBoundaries(neighbor.X, neighbor.Y) && !visited[neighbor.X, neighbor.Y])
                 {
                     visited[neighbor.X, neighbor.Y] = true;
-                    if (Expression.Evaluate(Main.tile[neighbor.X, neighbor.Y]))
+                    if (Expression.Evaluate(ref Main.tile[neighbor.X, neighbor.Y]))
                     {
                         points.Add(neighbor);
                         count++;

@@ -234,17 +234,17 @@ public class AutoClear(Main game) : LazyPlugin(game)
 
     private static SweepCategory? GetSweepCategory(WorldItem item)
     {
-        if (item.damage > 0)
+        if (item.inner.damage > 0)
         {
             return item.maxStack > 1 ? SweepCategory.Throwable : item.maxStack == 1 ? SweepCategory.Swinging : null;
         }
 
-        if (item.damage < 0)
+        if (item.inner.damage < 0)
         {
-            return item.maxStack > 1 ? SweepCategory.Regular : item.maxStack == 1 ? SweepCategory.Vanity : null;
+            return item.inner.maxStack > 1 ? SweepCategory.Regular : item.inner.maxStack == 1 ? SweepCategory.Vanity : null;
         }
 
-        return item.maxStack == 1 ? SweepCategory.Equipment : null;
+        return item.inner.maxStack == 1 ? SweepCategory.Equipment : null;
     }
 
     private static bool CanSweepCategory(SweepCategory category)

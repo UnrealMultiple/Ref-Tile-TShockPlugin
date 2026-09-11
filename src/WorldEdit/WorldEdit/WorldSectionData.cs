@@ -216,7 +216,7 @@ public sealed class WorldSectionData
 
 	public IList<DisplayDollExtraData> DisplayDollExtras;
 
-	public ITile[,] Tiles;
+	public TileData[,] Tiles;
 
 	public int Width;
 
@@ -242,13 +242,13 @@ public sealed class WorldSectionData
 		FoodPlatters = new List<DisplayItemData>();
 		DisplayJars = new List<DisplayItemData>();
 		DisplayDollExtras = new List<DisplayDollExtraData>();
-		Tiles = new ITile[width, height];
+		Tiles = new TileData[width, height];
 	}
 
-	public void ProcessTile(ITile tile, int x, int y)
+	public void ProcessTile(TileData tile, int x, int y)
 	{
-																																		Tiles[x, y] = (ITile)new Tile();
-		if (tile != null)
+		Tiles[x, y] = new TileData();
+		if (tile.IsNotNull)
 		{
 			Tiles[x, y].CopyFrom(tile);
 		}

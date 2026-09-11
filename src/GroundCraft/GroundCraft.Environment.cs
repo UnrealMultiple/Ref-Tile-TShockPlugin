@@ -54,7 +54,7 @@ public sealed partial class GroundCraft
                 if (!WorldGen.InWorld(x, y, 10))
                     continue;
 
-                ITile tile = Framing.GetTileSafely(x, y);
+                ref var tile = ref Framing.GetTileSafely(x, y);
                 if (tile.liquid <= 0)
                     continue;
 

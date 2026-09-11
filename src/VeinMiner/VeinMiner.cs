@@ -70,7 +70,8 @@ public partial class VeinMiner : TerrariaPlugin
 
     static void OnTileEdit(object? sender, GetDataHandlers.TileEditEventArgs args)
     {
-        if (Main.tile[args.X, args.Y] is not { } tile || !args.Player.HasPermission("veinminer") || !Config.Enable || !args.Player.GetData<VMStatus>("VeinMiner").Enable || !Config.TargetTile.Contains(tile.type) || args.Action != GetDataHandlers.EditAction.KillTile || args.EditData != 0)
+        ref var tile = ref Main.tile[args.X, args.Y];
+        if (Main.tile[args.X, args.Y].IsNull || !args.Player.HasPermission("veinminer") || !Config.Enable || !args.Player.GetData<VMStatus>("VeinMiner").Enable || !Config.TargetTile.Contains(tile.type) || args.Action != GetDataHandlers.EditAction.KillTile || args.EditData != 0)
         {
             return;
         }

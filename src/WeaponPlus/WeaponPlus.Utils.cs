@@ -11,97 +11,6 @@ namespace WeaponPlus;
 
 public partial class WeaponPlus : TerrariaPlugin
 {
-    #region 新物品
-    public static int MyNewItem(IEntitySource source, Vector2 pos, Vector2 randomBox, int Type, int Stack = 1, bool noBroadcast = false, int prefixGiven = 0, bool noGrabDelay = false, bool reverseLookup = false)
-    {
-        return MyNewItem(source, (int) pos.X, (int) pos.Y, (int) randomBox.X, (int) randomBox.Y, Type, Stack, noBroadcast, prefixGiven, noGrabDelay, reverseLookup);
-    }
-
-    // TODO: 需要更新
-    public static int MyNewItem(IEntitySource source, int X, int Y, int Width, int Height, int Type, int Stack = 1, bool noBroadcast = false, int pfix = 0, bool noGrabDelay = false, bool reverseLookup = false)
-    {
-        if (WorldGen.generatingWorld)
-        {
-            return 0;
-        }
-        Main.rand ??= new UnifiedRandom();
-        if (Main.tenthAnniversaryWorld)
-        {
-            if (Type == 58)
-            {
-                Type = Terraria.Utils.NextFromList(Main.rand, new short[3] { 1734, 1867, 58 });
-            }
-            if (Type == 184)
-            {
-                Type = Terraria.Utils.NextFromList(Main.rand, new short[3] { 1735, 1868, 184 });
-            }
-        }
-        if (Main.halloween)
-        {
-            if (Type == 58)
-            {
-                Type = 1734;
-            }
-            if (Type == 184)
-            {
-                Type = 1735;
-            }
-        }
-        if (Main.xMas)
-        {
-            if (Type == 58)
-            {
-                Type = 1867;
-            }
-            if (Type == 184)
-            {
-                Type = 1868;
-            }
-        }
-        if (Type > 0 && Item.cachedItemSpawnsByType[Type] != -1)
-        {
-            Item.cachedItemSpawnsByType[Type] += Stack;
-            return 400;
-        }
-        Main.item[400] = new WorldItem();
-        var num = 400;
-        if (Main.netMode != 1)
-        {
-            num = Item.PickAnItemSlotToSpawnItemOn();
-        }
-        Main.timeItemSlotCannotBeReusedFor[num] = 0;
-        Main.item[num] = new WorldItem();
-        var val = Main.item[num];
-        val.SetDefaults(Type);
-        val.Prefix(pfix);
-        val.stack = Stack;
-        val.position.X = X + (Width / 2) - (val.width / 2);
-        val.position.Y = Y + (Height / 2) - (val.height / 2);
-        val.wet = Collision.WetCollision(val.position, val.width, val.height);
-        val.velocity.X = Main.rand.Next(-30, 31) * 0.1f;
-        val.velocity.Y = Main.rand.Next(-40, -15) * 0.1f;
-        if (Type == 859 || Type == 4743)
-        {
-            val.velocity *= 0f;
-        }
-        if (Type == 520 || Type == 521 || (val.type >= 0 && ItemID.Sets.NebulaPickup[val.type]))
-        {
-            val.velocity.X = Main.rand.Next(-30, 31) * 0.1f;
-            val.velocity.Y = Main.rand.Next(-30, 31) * 0.1f;
-        }
-        val.TurnToAir();
-        val.timeSinceItemSpawned = ItemID.Sets.OverflowProtectionTimeOffset[val.type];
-        if (ItemSlot.Options.HighlightNewItems && val.type >= 0 && !ItemID.Sets.NeverAppearsAsNewInInventory[val.type])
-        {
-            val.newAndShiny = true;
-        }
-        else if (Main.netMode == 0)
-        {
-            val.playerIndexTheItemIsReservedFor = Main.myPlayer;
-        }
-        return num;
-    }
-    #endregion
 
     #region 更换背包中的武器
     public static void ReplaceWeaponsInBackpack(Player? player, WItem? item, int model = 0)
@@ -117,13 +26,13 @@ public partial class WeaponPlus : TerrariaPlugin
             {
                 var stack = player.inventory[i].stack;
                 var prefix = player.inventory[i].prefix;
-                player.inventory[i].TurnToAir(false);
+                player.inventory[i].TurnToAir();
                 TShock.Players[whoAmI].SendData((PacketTypes) 5, "", whoAmI, i);
                 switch (model)
                 {
                     case 0:
                     {
-                        var num2 = MyNewItem(null!, player.Center, new Vector2(1f, 1f), item.id, stack);
+                        var num2 = Item.NewItem(null!, player.Center, item.id, stack);
                         Main.item[num2].playerIndexTheItemIsReservedFor = whoAmI;
                         Main.item[num2].inner.prefix = prefix;
                         var num3 = (int) (item.orig_damage * 0.05f * item.damage_level);
@@ -135,7 +44,7 @@ public partial class WeaponPlus : TerrariaPlugin
                         var obj3 = Main.item[num2];
                         obj3.inner.knockBack += item.orig_knockBack * 0.05f * item.knockBack_level;
                         Main.item[num2].inner.useAnimation = item.orig_useAnimation - item.useSpeed_level;
-                        Main.item[num2].inner.useTime = (int) (item.orig_useTime * 1f / item.orig_useAnimation * Main.item[num2].useAnimation);
+                        Main.item[num2].inner.useTime = (int) (item.orig_useTime * 1f / item.orig_useAnimation * Main.item[num2].inner.useAnimation);
                         var obj4 = Main.item[num2];
                         obj4.inner.shootSpeed += item.orig_shootSpeed * 0.05f * item.shootSpeed_level;
                         TShock.Players[whoAmI].SendData((PacketTypes) 21, null, num2);
@@ -145,7 +54,7 @@ public partial class WeaponPlus : TerrariaPlugin
                     }
                     case 1:
                     {
-                        var num = MyNewItem(null!, player.Center, new Vector2(1f, 1f), item.id, stack);
+                        var num = Item.NewItem(null!, player.Center, item.id, stack);
                         Main.item[num].playerIndexTheItemIsReservedFor = whoAmI;
                         Main.item[num].inner.prefix = prefix;
                         TShock.Players[whoAmI].SendData((PacketTypes) 21, null, num);
@@ -213,7 +122,7 @@ public partial class WeaponPlus : TerrariaPlugin
                 if (one.TPlayer.inventory[i].IsACoin && i != 54 && i != 55 && i != 56 && i != 57 && i != 58)
                 {
                     num6 += one.TPlayer.inventory[i].value / 5L * one.TPlayer.inventory[i].stack;
-                    one.TPlayer.inventory[i].TurnToAir(false);
+                    one.TPlayer.inventory[i].TurnToAir();
                     one.SendData((PacketTypes) 5, "", one.Index, i);
                     if (num6 >= coin)
                     {
@@ -227,7 +136,7 @@ public partial class WeaponPlus : TerrariaPlugin
                 if (one.TPlayer.bank.item[num7].IsACoin)
                 {
                     num6 += one.TPlayer.bank.item[num7].value / 5L * one.TPlayer.bank.item[num7].stack;
-                    one.TPlayer.bank.item[num7].TurnToAir(false);
+                    one.TPlayer.bank.item[num7].TurnToAir();
                     one.SendData((PacketTypes) 5, "", one.Index, i);
                     if (num6 >= coin)
                     {
@@ -241,7 +150,7 @@ public partial class WeaponPlus : TerrariaPlugin
                 if (one.TPlayer.bank2.item[num8].IsACoin)
                 {
                     num6 += one.TPlayer.bank2.item[num8].value / 5L * one.TPlayer.bank2.item[num8].stack;
-                    one.TPlayer.bank2.item[num8].TurnToAir(false);
+                    one.TPlayer.bank2.item[num8].TurnToAir();
                     one.SendData((PacketTypes) 5, "", one.Index, i);
                     if (num6 >= coin)
                     {
@@ -255,7 +164,7 @@ public partial class WeaponPlus : TerrariaPlugin
                 if (one.TPlayer.bank3.item[num9].IsACoin)
                 {
                     num6 += one.TPlayer.bank3.item[num9].value / 5L * one.TPlayer.bank3.item[num9].stack;
-                    one.TPlayer.bank3.item[num9].TurnToAir(false);
+                    one.TPlayer.bank3.item[num9].TurnToAir();
                     one.SendData((PacketTypes) 5, "", one.Index, i);
                     if (num6 >= coin)
                     {
@@ -273,7 +182,7 @@ public partial class WeaponPlus : TerrariaPlugin
                 if (one.TPlayer.bank4.item[num10].IsACoin)
                 {
                     num6 += one.TPlayer.bank4.item[num10].value / 5L * one.TPlayer.bank4.item[num10].stack;
-                    one.TPlayer.bank4.item[num10].TurnToAir(false);
+                    one.TPlayer.bank4.item[num10].TurnToAir();
                     one.SendData((PacketTypes) 5, "", one.Index, i);
                     if (num6 >= coin)
                     {
@@ -292,7 +201,7 @@ public partial class WeaponPlus : TerrariaPlugin
                 if (one.TPlayer.bank.item[num11].IsACoin)
                 {
                     num6 += one.TPlayer.bank.item[num11].value / 5L * one.TPlayer.bank.item[num11].stack;
-                    one.TPlayer.bank.item[num11].TurnToAir(false);
+                    one.TPlayer.bank.item[num11].TurnToAir();
                     one.SendData((PacketTypes) 5, "", one.Index, j);
                 }
             }
@@ -316,7 +225,7 @@ public partial class WeaponPlus : TerrariaPlugin
                 if (one.TPlayer.bank2.item[num13].IsACoin)
                 {
                     num6 += one.TPlayer.bank2.item[num13].value / 5L * one.TPlayer.bank2.item[num13].stack;
-                    one.TPlayer.bank2.item[num13].TurnToAir(false);
+                    one.TPlayer.bank2.item[num13].TurnToAir();
                     one.SendData((PacketTypes) 5, "", one.Index, l);
                 }
             }
@@ -340,7 +249,7 @@ public partial class WeaponPlus : TerrariaPlugin
                 if (one.TPlayer.bank3.item[num15].IsACoin)
                 {
                     num6 += one.TPlayer.bank3.item[num15].value / 5L * one.TPlayer.bank3.item[num15].stack;
-                    one.TPlayer.bank3.item[num15].TurnToAir(false);
+                    one.TPlayer.bank3.item[num15].TurnToAir();
                     one.SendData((PacketTypes) 5, "", one.Index, n);
                 }
             }
@@ -364,7 +273,7 @@ public partial class WeaponPlus : TerrariaPlugin
                 if (one.TPlayer.bank4.item[num19].IsACoin)
                 {
                     num6 += one.TPlayer.bank4.item[num19].value / 5L * one.TPlayer.bank4.item[num19].stack;
-                    one.TPlayer.bank4.item[num19].TurnToAir(false);
+                    one.TPlayer.bank4.item[num19].TurnToAir();
                     one.SendData((PacketTypes) 5, "", one.Index, num18);
                 }
             }
@@ -387,7 +296,7 @@ public partial class WeaponPlus : TerrariaPlugin
                 if (one.TPlayer.inventory[num22].IsACoin && num22 != 54 && num22 != 55 && num22 != 56 && num22 != 57 && num22 != 58)
                 {
                     num6 += one.TPlayer.inventory[num22].value / 5L * one.TPlayer.inventory[num22].stack;
-                    one.TPlayer.inventory[num22].TurnToAir(false);
+                    one.TPlayer.inventory[num22].TurnToAir();
                     one.SendData((PacketTypes) 5, "", one.Index, num22);
                 }
             }
@@ -406,7 +315,7 @@ public partial class WeaponPlus : TerrariaPlugin
         {
             foreach (var item in items)
             {
-                var num24 = Item.NewItem(new EntitySource_DebugCommand(), one.TPlayer.Center, new Vector2(5f, 5f), item.type, item.stack, true, 0, true);
+                var num24 = Item.NewItem(new EntitySource_DebugCommand(), one.TPlayer.Center, item.type, item.stack);
                 Main.item[num24].playerIndexTheItemIsReservedFor = one.Index;
                 one.SendData((PacketTypes) 21, "", num24, 1f);
                 one.SendData((PacketTypes) 22, null, num24);

@@ -13,7 +13,7 @@ public class SetWall : WECommand
 	public SetWall(int x, int y, int x2, int y2, MagicWand magicWand, TSPlayer plr, int wallType, Expression expression)
 		: base(x, y, x2, y2, magicWand, plr)
 	{
-		_expression = expression ?? new TestExpression(_ => true);
+		_expression = expression ?? new TestExpression((ref _) => true);
 		_wallType = wallType;
 	}
 
@@ -29,7 +29,7 @@ public class SetWall : WECommand
 		{
 			for (int tileY = y; tileY <= y2; tileY++)
 			{
-				if (Tools.CanSet(Tile: false, Main.tile[tileX, tileY], _wallType, select, _expression, magicWand, tileX, tileY, plr))
+				if (Tools.CanSet(Tile: false, ref Main.tile[tileX, tileY], _wallType, select, _expression, magicWand, tileX, tileY, plr))
 				{
 					Main.tile[tileX, tileY].wall = (ushort)_wallType;
 					changedWallCount++;

@@ -25,7 +25,7 @@ public class Flood : WECommand
 		{
 			for (int j = y; j <= y2; j++)
 			{
-				ITile val = Main.tile[i, j];
+				ref var val = ref Main.tile[i, j];
 				if ((!val.active() || !Main.tileSolid[val.type]) && magicWand.InSelection(i, j))
 				{
 					val.liquidType((int)(byte)liquid);

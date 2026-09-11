@@ -152,12 +152,6 @@ public partial class PControl : TerrariaPlugin
         config.LasetServerRestartDate = DateTime.Now;
         config.LasetAutoCommandDate = DateTime.Now;
 
-        var tileProviderArg = Main.tile switch
-        {
-            TileProvider => "-heaptile",
-            ConstileationProvider => "-constileation",
-            _ => ""
-        };
         
         var passwordArg = string.IsNullOrEmpty(Netplay.ServerPassword)?"":"-password " + Netplay.ServerPassword ;
 
@@ -169,7 +163,7 @@ public partial class PControl : TerrariaPlugin
             config.SaveConfigFile();
             //这里worldname必须加.wld后缀
             Process.Start(Environment.ProcessPath!,
-                $"-lang 7 -world \"{config.path()}/{worldname}.wld\" -maxplayers {Main.maxNetPlayers} -port {Netplay.ListenPort} {tileProviderArg} {passwordArg}");
+                $"-lang 7 -world \"{config.path()}/{worldname}.wld\" -maxplayers {Main.maxNetPlayers} -port {Netplay.ListenPort} {passwordArg}");
         }
         //否则生成一个
         else
@@ -186,7 +180,7 @@ public partial class PControl : TerrariaPlugin
 
             //-autocreate可以不用加.wld后缀
             Process.Start(Environment.ProcessPath!,
-                $"-lang 7 -autocreate {config.MapSizeForAfterReset} -seed {config.WorldSeedForAfterReset} -world {config.path()}/{worldname} -difficulty {config.MapDifficultyForAfterReset} -maxplayers {Main.maxNetPlayers} -port {Netplay.ListenPort} {tileProviderArg} {passwordArg}");
+                $"-lang 7 -autocreate {config.MapSizeForAfterReset} -seed {config.WorldSeedForAfterReset} -world {config.path()}/{worldname} -difficulty {config.MapDifficultyForAfterReset} -maxplayers {Main.maxNetPlayers} -port {Netplay.ListenPort} {passwordArg}");
         }
 
         // if (config.ServerLogWriterEnabledForAotuResetting)
@@ -264,15 +258,9 @@ public partial class PControl : TerrariaPlugin
         }
         catch { }
 
-        var tileProviderArg = Main.tile switch
-        {
-            TileProvider => "-heaptile",
-            ConstileationProvider => "-constileation",
-            _ => ""
-        };
         //Main.worldPathName是有.wld后缀的
         Process.Start(Environment.ProcessPath!,
-            $"-lang 7 -world \"{Main.worldPathName}\" -maxplayers {Main.maxNetPlayers} -port {Netplay.ListenPort} {tileProviderArg}");
+            $"-lang 7 -world \"{Main.worldPathName}\" -maxplayers {Main.maxNetPlayers} -port {Netplay.ListenPort}");
         Environment.Exit(0);
     }
 

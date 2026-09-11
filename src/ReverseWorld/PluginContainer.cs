@@ -58,8 +58,8 @@ public class PluginContainer : TerrariaPlugin
             {
                 if (Main.tile[x, y] != null && Main.tile[x, underworldLayer - 1 - y] != null)
                 {
-                    var tempTile = (ITile) Main.tile[x, y].Clone();
-                    Main.tile[x, y] = (ITile) Main.tile[x, underworldLayer - 1 - y].Clone();
+                    var tempTile = (TileData) Main.tile[x, y].Clone();
+                    Main.tile[x, y] = (TileData) Main.tile[x, underworldLayer - 1 - y].Clone();
                     Main.tile[x, underworldLayer - 1 - y] = tempTile;
                 }
             }
@@ -69,8 +69,8 @@ public class PluginContainer : TerrariaPlugin
         {
             for (var y = 0; y < underworldLayer; y++)
             {
-                var tile = Main.tile[x, y];
-                if (tile != null)
+                ref var tile = ref Main.tile[x, y];
+                if (tile.IsNotNull)
                 {
                     var slope = tile.slope();
                     switch (slope)

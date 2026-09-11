@@ -126,7 +126,7 @@ public class EyeofCthulhu : CNPC
                 }
                 if (this.npc.ai[1] == 4f && this.npc.ai[2] % 15f == 0f)
                 {
-                    var num2 = Collect.MyNewProjectile(null, this.npc.Center, Terraria.Utils.RotateRandom(Vector2.One, 6.2831854820251465) * 0.5f, 96, 6, 5f);
+                    var num2 = Projectile.NewProjectile(null, this.npc.Center, Terraria.Utils.RotateRandom(Vector2.One, 6.2831854820251465) * 0.5f, 96, 6, 5f);
                     Main.projectile[num2].timeLeft = 240;
                     CProjectile.Update(num2);
                 }
@@ -154,7 +154,7 @@ public class EyeofCthulhu : CNPC
                 }
                 if (this.npc.ai[1] == 4f && this.npc.ai[2] % 10f == 0f)
                 {
-                    var num = Collect.MyNewProjectile(null, this.npc.Center, Terraria.Utils.RotateRandom(Vector2.One, 6.2831854820251465) * 0.5f, 96, 9, 5f);
+                    var num = Projectile.NewProjectile(null, this.npc.Center, Terraria.Utils.RotateRandom(Vector2.One, 6.2831854820251465) * 0.5f, 96, 9, 5f);
                     Main.projectile[num].timeLeft = 600;
                     CProjectile.Update(num);
                 }

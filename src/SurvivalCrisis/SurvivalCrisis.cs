@@ -948,7 +948,7 @@ namespace SurvivalCrisis
                 {
                     if (Rand.NextDouble() < probability)
                     {
-                        Item.NewItem(new EntitySource_DebugCommand(), pos, rBox, type, stack, false, prefix);
+                        Item.NewItem(new EntitySource_DebugCommand(), pos, type, stack, prefix);
                     }
                 }
                 switch (args.npc.type)

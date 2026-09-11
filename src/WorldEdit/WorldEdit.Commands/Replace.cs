@@ -17,7 +17,7 @@ public class Replace : WECommand
 	{
 		_sourceTileType = from;
 		_targetTileType = to;
-		_expression = expression ?? new TestExpression(_ => true);
+		_expression = expression ?? new TestExpression((ref _) => true);
 	}
 
 	public override void Execute()
@@ -32,8 +32,8 @@ public class Replace : WECommand
 		{
 			for (int tileY = y; tileY <= y2; tileY++)
 			{
-				ITile tile = Main.tile[tileX, tileY];
-				if (((_sourceTileType >= 0 && tile.active() && _sourceTileType == tile.type) || (_sourceTileType == -1 && !tile.active()) || (_sourceTileType == -2 && tile.liquid != 0 && tile.liquidType() == 1) || (_sourceTileType == -3 && tile.liquid != 0 && tile.liquidType() == 2) || (_sourceTileType == -4 && tile.liquid == 0 && tile.liquidType() == 0)) && Tools.CanSet(Tile: true, tile, _targetTileType, select, _expression, magicWand, tileX, tileY, plr))
+				ref var tile = ref Main.tile[tileX, tileY];
+				if (((_sourceTileType >= 0 && tile.active() && _sourceTileType == tile.type) || (_sourceTileType == -1 && !tile.active()) || (_sourceTileType == -2 && tile.liquid != 0 && tile.liquidType() == 1) || (_sourceTileType == -3 && tile.liquid != 0 && tile.liquidType() == 2) || (_sourceTileType == -4 && tile.liquid == 0 && tile.liquidType() == 0)) && Tools.CanSet(Tile: true, ref tile, _targetTileType, select, _expression, magicWand, tileX, tileY, plr))
 				{
 					SetTile(tileX, tileY, _targetTileType);
 					replacedTileCount++;

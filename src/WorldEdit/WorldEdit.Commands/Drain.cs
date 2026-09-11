@@ -22,7 +22,7 @@ public class Drain : WECommand
 		{
 			for (int tileY = y; tileY <= y2; tileY++)
 			{
-				ITile tile = Main.tile[tileX, tileY];
+				ref var tile = ref Main.tile[tileX, tileY];
 				if (tile.liquid != 0)
 				{
 					tile.liquid = 0;

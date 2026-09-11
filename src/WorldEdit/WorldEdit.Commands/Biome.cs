@@ -30,7 +30,7 @@ public class Biome : WECommand
 			{
 				for (int j = y; j <= y2; j++)
 				{
-					if (select(i, j, plr) && WorldEdit.Biomes[sourceBiome].ConvertTile(Main.tile[i, j], WorldEdit.Biomes[targetBiome]))
+					if (select(i, j, plr) && WorldEdit.Biomes[sourceBiome].ConvertTile(ref Main.tile[i, j], WorldEdit.Biomes[targetBiome]))
 					{
 						convertedTileCount++;
 					}

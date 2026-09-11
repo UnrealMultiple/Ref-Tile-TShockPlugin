@@ -10,8 +10,8 @@ public class OrExpression : Expression
 		Right = right;
 	}
 
-	public override bool Evaluate(ITile tile)
+	public override bool Evaluate(ref TileData tile)
 	{
-		return Left.Evaluate(tile) || Right.Evaluate(tile);
+		return Left.Evaluate(ref tile) || Right.Evaluate(ref tile);
 	}
 }

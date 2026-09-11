@@ -32,7 +32,7 @@ internal class SpectreArmorProj : CProjectile
                 var num = ((Vector2) val2).LengthSquared() / 1000000f;
                 var damage = (int) (40f + ((1f - num) * any2));
                 var val4 = (val3.Center - this.proj.Center).SafeNormalize(Vector2.Zero);
-                var num2 = Collect.MyNewProjectile(null, this.proj.Center, val4 * 4f, any, damage, any3, this.proj.owner);
+                var num2 = Projectile.NewProjectile(null, this.proj.Center, val4 * 4f, any, damage, any3, this.proj.owner);
                 Main.projectile[num2].timeLeft = 480;
                 Update(num2);
             }
@@ -45,7 +45,7 @@ internal class SpectreArmorProj : CProjectile
         var any5 = Challenger.config.EnableSpectreArmorEffect_7;
         var any6 = Challenger.config.EnableSpectreArmorEffect_8;
 
-        var num = Collect.MyNewProjectile(null, position, velocity, any4, any5, any6, owner);
+        var num = Projectile.NewProjectile(null, position, velocity, any4, any5, any6, owner);
         var spectreArmorProj = new SpectreArmorProj(Main.projectile[num], ai, lable);
         Collect.cprojs[num] = spectreArmorProj;
         Update(num);

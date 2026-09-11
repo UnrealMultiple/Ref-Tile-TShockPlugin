@@ -43,7 +43,7 @@ public class Plugin : TerrariaPlugin
             return;
         }
 
-        var itemIndex = Item.NewItem(null, (int) plr.X, (int) plr.Y, plr.TPlayer.width, plr.TPlayer.height, 29, drop_amount, true, 0, true);
+        var itemIndex = Item.NewItem(null, (int) plr.X, (int) plr.Y, plr.TPlayer.width, plr.TPlayer.height, 29, drop_amount, true, 0);
     }
     #endregion
 
