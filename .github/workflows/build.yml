@@ -59,7 +59,7 @@ jobs:
       - name: 同步其他平台
         continue-on-error: true
         shell: pwsh
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'UnrealMultiple/TShockPlugin'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'UnrealMultiple/Ref-Tile-TShockPlugin'
         run: |
           sudo pip install beautifulsoup4
           python scripts/ApmApiSync.py ${{ secrets.CAI_APM_API_KEY }}
@@ -87,7 +87,7 @@ jobs:
           body: |
             # 插件下载和更新日志
             ###  📅 每次仓库更新，我们都会在这里发布最新的Release。请注意，这个仓库只有一个Release，所以你总是能在这里找到最新的版本。
-            ###  📖介绍已经以MD的形式附在插件包中，可以使用文本编辑器打开。更推荐你直接在仓库主页中的[插件列表](https://github.com/UnrealMultiple/TShockPlugin?tab=readme-ov-file#%E5%B7%B2%E6%94%B6%E9%9B%86%E6%8F%92%E4%BB%B6)，点击插件名跳转。
+            ###  📖介绍已经以MD的形式附在插件包中，可以使用文本编辑器打开。更推荐你直接在仓库主页中的[插件列表](https://github.com/UnrealMultiple/Ref-Tile-TShockPlugin?tab=readme-ov-file#%E5%B7%B2%E6%94%B6%E9%9B%86%E6%8F%92%E4%BB%B6)，点击插件名跳转。
             ###  📦 你可以在页面的`最底部↓↓↓`找到插件包的下载链接。下载完成后，你需要使用`ZIP压缩工具`进行解压。
             > [!CAUTION]
             >**请你`仔细`地阅读`上面的说明`，不要到处问`插件怎么用`、`ZIP如何解压`**
@@ -104,7 +104,7 @@ jobs:
       - name: 更新相关文件
         continue-on-error: true
         shell: pwsh
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'UnrealMultiple/TShockPlugin'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'UnrealMultiple/Ref-Tile-TShockPlugin'
         run: |
           dotnet tool restore
           git config --local user.email "action@github.com"
@@ -151,7 +151,7 @@ jobs:
       - name: 上传翻译模板至 Crowdin
         continue-on-error: true
         uses: crowdin/github-action@v3
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'UnrealMultiple/TShockPlugin'
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'UnrealMultiple/Ref-Tile-TShockPlugin'
         with:
           crowdin_branch_name: 'master'
 
