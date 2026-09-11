@@ -72,22 +72,53 @@ function Get-TShockZip {
     }
 
     $rid = if ([System.Environment]::OSVersion.Platform -Match "Unix") { "linux-(x64|amd64)" } else { "win-(x64|amd64)" }
-    Invoke-GitHubRequest -Uri ( `
-            Invoke-GitHubRequest -Uri 'https://api.github.com/repos/UnrealMultiple/Ref-Tile-TShock/releases' | `
-            ConvertFrom-Json | `
-            Select-Object -First 1 -ExpandProperty assets | `
-            Where-Object browser_download_url -Match $rid | `
-            Select-Object -ExpandProperty browser_download_url) `
-        -OutFile $OutFile
+    $release = Invoke-GitHubRequest -Uri 'https://api.github.com/repos/UnrealMultiple/Ref-Tile-TShock/releases' | ConvertFrom-Json | Select-Object -First 1
+    if (-not $release) {
+        throw "Ref-Tile-TShock 仓库没有任何 Release,无法下载 TShock!"
+    }
+    $downloadUrl = $release.assets | Where-Object browser_download_url -Match $rid | Select-Object -First 1 -ExpandProperty browser_download_url
+    if (-not $downloadUrl) {
+        $available = ($release.assets | ForEach-Object { $_.name }) -Join ", "
+        throw "在 Release '$($release.tag_name)' 中找不到匹配 '$rid' 的资产。可用资产: $available"
+    }
+    Write-Host "下载 TShock 资产: $downloadUrl"
+    Invoke-GitHubRequest -Uri $downloadUrl -OutFile $OutFile
+    $size = (Get-Item $OutFile).Length
+    if ($size -lt 1024) {
+        throw "下载的 TShock 文件异常过小($size 字节),内容: $(Get-Content $OutFile -Raw)"
+    }
+    Write-Host "TShock 下载完成: $OutFile ($size 字节)"
 }
 
 # Prepare TShock
 if (-not(Test-Path ./cache/TShock.zip -PathType Leaf) -or $NoCache) {
     Get-TShockZip ./cache/TShock.zip
 }
-Expand-Archive ./cache/TShock.zip -DestinationPath ./publish
+# 下载的资产可能是 zip 或 tar.gz,先识别真实格式
+$zipBytes = [System.IO.File]::ReadAllBytes((Resolve-Path ./cache/TShock.zip))[0..1]
+$isZip = ($zipBytes[0] -eq 0x50 -and $zipBytes[1] -eq 0x4B)        # PK
+$isGzip = ($zipBytes[0] -eq 0x1F -and $zipBytes[1] -eq 0x8B)        # \x1f\x8b
+Write-Host "下载文件格式: $(if ($isZip) {'zip'} elseif ($isGzip) {'tar.gz'} else {'未知'})"
+if ($isGzip) {
+    if ([System.Environment]::OSVersion.Platform -Match "Unix") {
+        tar xzf ./cache/TShock.zip --directory ./publish
+    }
+    else {
+        throw "Windows 环境暂不支持 tar.gz 资产,请在 Unix 环境运行"
+    }
+}
+else {
+    Expand-Archive ./cache/TShock.zip -DestinationPath ./publish
+}
 if ([System.Environment]::OSVersion.Platform -Match "Unix") {
-    tar xvf ./publish/TShock-Beta-linux-x64-Release.tar --directory ./publish
+    $tarFile = Get-ChildItem ./publish -Filter *.tar -File | Select-Object -First 1
+    if ($tarFile) {
+        Write-Host "解压 TShock tar: $($tarFile.Name)"
+        tar xvf $tarFile.FullName --directory ./publish
+    }
+    else {
+        Write-Warning "publish 目录中未找到 .tar 文件,跳过 tar 解压(assets: $((Get-ChildItem ./publish | Select-Object -ExpandProperty Name) -Join ', '))"
+    }
 }
 
 # Prepare plugin dlls
@@ -106,14 +137,18 @@ foreach ($p in @(Get-ChildItem ../src/**/*.csproj)) {
 Copy-Item ../.config/submodule-manifests/* ./manifests
 
 # Start generating plugin list
+if (-not (Test-Path './TShock.Server' -PathType Leaf)) {
+    throw "未找到 ./TShock.Server!publish 目录内容: $((Get-ChildItem ./publish | Select-Object -ExpandProperty Name) -Join ', ')"
+}
+Write-Host "启动 TShock.Server 生成插件列表..."
 $proc = Start-Process -NoNewWindow -PassThru './TShock.Server' -ArgumentList '-dump-plugins-list-only','./manifests'
 $proc | Wait-Process -Timeout 180 -ErrorAction SilentlyContinue -ErrorVariable timeouted
 if ($timeouted) {
-    $proc | Stop-Process
-    throw "TShock.Server timeout!"
+    $proc | Stop-Process -Force -ErrorAction SilentlyContinue
+    throw "TShock.Server 超时(180s)!"
 }
 elseif ($proc.ExitCode -ne 0) {
-    throw "TShock.Server error!"
+    throw "TShock.Server 退出码: $($proc.ExitCode)"
 }
 
 
