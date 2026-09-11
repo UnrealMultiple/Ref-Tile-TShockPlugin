@@ -56,14 +56,15 @@ jobs:
           path: out/Target/*
           compression-level: 9
 
-      - name: 同步其他平台
-        continue-on-error: true
-        shell: pwsh
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'UnrealMultiple/Ref-Tile-TShockPlugin'
-        run: |
-          sudo pip install beautifulsoup4
-          python scripts/ApmApiSync.py ${{ secrets.CAI_APM_API_KEY }}
-          sudo python scripts/ForumHelper.py Cai ${{ secrets.MONIKA_TR_PASSWORD }}
+      # 暂时注释掉 同步其他平台
+      # - name: 同步其他平台
+      #   continue-on-error: true
+      #   shell: pwsh
+      #   if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.repository == 'UnrealMultiple/Ref-Tile-TShockPlugin'
+      #   run: |
+      #     sudo pip install beautifulsoup4
+      #     python scripts/ApmApiSync.py ${{ secrets.CAI_APM_API_KEY }}
+      #     sudo python scripts/ForumHelper.py Cai ${{ secrets.MONIKA_TR_PASSWORD }}
 
       - name: 更新tag
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
